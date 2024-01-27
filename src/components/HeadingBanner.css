@@ -1,0 +1,17 @@
+.heading-banner {
+	/* background-image: url('/trading-simulator/frontpage-background.jpg'); */
+	display: flex;
+	flex-direction: column;
+	height: 15vh;
+	margin: 0;
+	color: lightgray;
+	justify-content: center;
+	align-items: center;
+}
+  
+.heading-banner h1 {
+	margin: 0;
+	font-size: 3rem;
+	letter-spacing: 0.2rem;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}

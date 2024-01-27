@@ -1,0 +1,52 @@
+.simulator-background {
+    background: linear-gradient(#023058, #019ad6);
+    margin: 0;
+    height: 100%;
+    padding: 0 5vw;
+  }
+
+h3 {
+    margin: 0;
+}
+  
+.stock-charts {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.stock-chart {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    width: 40vw;
+    margin: 0 20px;
+}
+
+.close-trading-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.close-trading-button button {
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: blueviolet; /* Add a blue color for the buttons */
+    color: white;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    border-radius: 15px;
+    margin: 0 auto;
+    width: 100px;
+    height: 50px;
+}
+
+.close-trading-button button:hover {
+    background-color: blue;
+    color: white;
+    border-color: black;
+    border: 2px solid black;
+}

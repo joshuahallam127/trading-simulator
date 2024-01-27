@@ -1,13 +1,39 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import SelectStock from './components/SelectStockPage';
+import Simulator from './components/SimulatorPage';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+const router = createBrowserRouter([
+  {
+    path: '/trading-simulator/',
+    element: <HomePage />,
+  },
+  {
+    path: '/trading-simulator/App',
+    element: <App />,
+  },
+  {
+    path: '/trading-simulator/SelectStock',
+    element: <SelectStock />,
+  },
+  {
+    path: '/trading-simulator/Simulator/:ticker',
+    element: <Simulator />,
+  },
+  // {
+  //   path: '/Close',
+  //   element: <Close />,
+  // },
+]);
+
+createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

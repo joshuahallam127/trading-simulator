@@ -1,25 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import axios from 'axios';
+import HeadingBanner from './components/HeadingBanner';
 
-function App() {
+const checkTaskStatus = (taskId) => {
+  // send request to celery server to see if task is done
+  axios.get(`http://127.0.0.1:5000/api/check_task_status?task_id=${taskId}`)
+    .then(response => {
+      // this might need to be triple equal signs idk thooo. 
+      if (response.data === 'COPMLETED') {
+        console.log('task completed');
+      } else {
+        console.log(response.data);
+        setTimeout(() => checkTaskStatus(taskId), 500);
+      }
+    })
+    .catch(error => console.error('Error check task status: ', error));
+}
+
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <HeadingBanner title={'APP'} backButtonPath={'/trading-simulator'}/>
+      <h3>Yeah man</h3>
     </div>
-  );
+  )
 }
 
 export default App;

@@ -1,0 +1,60 @@
+.home-page {
+    background-image: url('../../public/frontpage-background.jpg');
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: inherit;
+    height: inherit;
+    color: white;
+}
+
+.text-container h1, .text-container h2, .text-container h3 {
+    font-weight: 500;
+    color: white;
+    margin: 1rem 1rem;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.text-container h1 {
+    font-size: 8rem;
+}
+
+.text-container h2 {
+    font-size: 3rem;
+}
+
+.text-container h3 {
+    font-size: 2rem;
+}
+
+.text-container button {
+    padding: 20px 30px;
+    margin: 15px;
+    border-radius: 15px; /* Adjust the border-radius for curved edges */
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: blueviolet; /* Add a blue color for the buttons */
+    color: white; /* Set text color to white for better visibility */
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    font-size: 20px;
+    font-family: 'Arial', 'Lato', sans-serif;
+  }
+  
+  .text-container button:hover {
+    background-color: blue;
+    color: white;
+    border-color: black;
+    border: 2px solid black;
+    padding: 19px 30px;
+  }

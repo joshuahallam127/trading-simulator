@@ -1,0 +1,147 @@
+.select-stock-background {
+  background: linear-gradient(#023058, #019ad6);
+  margin: 0;
+  height: 100%;
+  padding: 0 10vw;
+}
+
+.select-stock-body {
+  /* background: #f1f1f1; */
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
+  box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
+  padding: 0 20px;
+}
+
+.both-options {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  justify-content: space-between;
+  color: white;
+}
+
+.loaded-options {
+  display: flex;
+  flex-direction: column;
+  flex: 3;
+  text-align: center;
+}
+
+.new-options {
+  flex: 3;
+  text-align: center;
+}
+
+.middle-or {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+button {
+  border: 1px solid black;
+  cursor: pointer;
+  background-color: blueviolet; /* Add a blue color for the buttons */
+  color: white;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  border-radius: 15px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.buttons button {
+  width: 130px;
+  height: 70px;
+  margin: 30px;
+  box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(#9600d1, #570068);
+  font-size: 20px;
+  font-family: 'Arial', 'Lato', sans-serif;
+}
+
+.buttons button:hover {
+  background-color: blue;
+  color: white;
+  border-color: black;
+  border: 2px solid black;
+  padding: 19px 30px;
+}
+
+.async-select-container {
+  width: 15vw;
+  margin: 0 auto;
+  justify-content: top;
+  display: flex;
+  flex-direction: column;
+  white-space: pre-wrap;
+  text-align: left;
+  color: black;
+  font-size: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adding a subtle box shadow */
+  font-size: 20px;
+}
+
+th, td, tr {
+  padding: 20px;
+  text-align: left;
+}
+
+td input {
+  margin-right: 10px;
+}
+
+.download-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.download-buttons button {
+  width: 80px;
+  height: 50px;
+  margin: 20px;
+  background-color: orange; /* Add a blue color for the buttons */
+  font-size: 14px;
+  font-family: 'Arial', 'Lato', sans-serif;
+}
+
+.download-buttons button:hover {
+  background-color: blue;
+  color: white;
+  border-color: black;
+  border: 2px solid black;
+}
+
+.simulator-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 50px;
+}
+
+.simulator-button button{
+  padding: 20px 30px;
+  font-size: 20px;
+}
+
+.simulator-button button:hover {
+  background-color: blue;
+  color: white;
+  border-color: black;
+  border: 2px solid black;
+  padding: 19px 30px;
+}

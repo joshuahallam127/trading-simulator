@@ -1,0 +1,12 @@
+.back-button {
+  background-color: transparent;
+  border: none;
+  font-size: 40px;
+  cursor: pointer;
+  color: white;
+  transition: color 0.3s;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
