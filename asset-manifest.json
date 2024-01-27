@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "https://localhost:3000/trading-simulator/static/css/main.dc4beb17.css",
+    "main.js": "https://localhost:3000/trading-simulator/static/js/main.4ffaa1e3.js",
+    "static/js/787.3c9c46f6.chunk.js": "https://localhost:3000/trading-simulator/static/js/787.3c9c46f6.chunk.js",
+    "static/media/frontpage-background.jpg": "https://localhost:3000/trading-simulator/static/media/frontpage-background.96fdc0512feb226af57c.jpg",
+    "index.html": "https://localhost:3000/trading-simulator/index.html",
+    "main.dc4beb17.css.map": "https://localhost:3000/trading-simulator/static/css/main.dc4beb17.css.map",
+    "main.4ffaa1e3.js.map": "https://localhost:3000/trading-simulator/static/js/main.4ffaa1e3.js.map",
+    "787.3c9c46f6.chunk.js.map": "https://localhost:3000/trading-simulator/static/js/787.3c9c46f6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dc4beb17.css",
+    "static/js/main.4ffaa1e3.js"
+  ]
+}
