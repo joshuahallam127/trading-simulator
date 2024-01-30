@@ -189,7 +189,8 @@ const TickerOptions = ({ setTicker }) => {
 
   // get ticker options inside useEffect with empty dependency array so it only runs once.
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/list_ticker_options`)
+    axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/list_ticker_options`, withCredentials:false, headers: { 'Content-Type': 'application/x-www-form-urlencoded'}})
+    // axios.get(`${process.env.REACT_APP_API_URL}/list_ticker_options`)
       .then(response => setTickerOptions(response.data))
       .catch(error => console.error('Error getting ticker options: ', error));
   }, []);
