@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import SelectStock from './components/SelectStockPage';
 import Simulator from './components/SimulatorPage';
+import Results from './components/ResultsPage';
 
 const router = createBrowserRouter([
   {
@@ -25,10 +26,14 @@ const router = createBrowserRouter([
     path: '/trading-simulator/Simulator/:ticker',
     element: <Simulator />,
   },
-  // {
-  //   path: '/Close',
-  //   element: <Close />,
-  // },
+  {
+    path: '/trading-simulator/About',
+    element: <Simulator />,
+  },
+  {
+    path: '/trading-simulator/Results/:resultsArray',
+    element: <Results />,
+  },
 ]);
 
 createRoot(document.getElementById('root')).render(

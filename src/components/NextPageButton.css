@@ -1,0 +1,25 @@
+.next-page-button {
+  display: flex;
+  justify-content: center;
+}
+
+.next-page-button button {
+  padding: 20px 30px;
+  margin: 15px;
+  border-radius: 15px; /* Adjust the border-radius for curved edges */
+  border: 1px solid black;
+  cursor: pointer;
+  background-color: blueviolet; /* Add a blue color for the buttons */
+  color: white; /* Set text color to white for better visibility */
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  font-size: 20px;
+  font-family: 'Arial', 'Lato', sans-serif;
+}
+
+.next-page-button button:hover {
+  background-color: blue;
+  color: white;
+  border-color: black;
+  border: 2px solid black;
+  padding: 19px 30px;
+}

@@ -1,42 +1,31 @@
-.select-stock-background {
-  background: linear-gradient(#023058, #019ad6);
-  margin: 0;
-  height: 100%;
-  padding: 0 10vw;
-}
-
 .select-stock-body {
-  /* background: #f1f1f1; */
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  */
-  box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
-  padding: 0 20px;
+  /* background: linear-gradient(#023058, #019ad6); */
+  box-shadow:rgba(0, 0, 0, 0.6) 0px 0px 10px 0px;
+  margin: 0 15vw;
+  padding: 0 2vw;
+  padding-top: 12vh;
+  background: white;
 }
 
 .both-options {
   display: flex;
   flex-direction: row;
-  margin: 0;
+  margin-bottom: 30px;
   justify-content: space-between;
-  color: white;
+  color: black;
+  text-align: center;
 }
 
 .loaded-options {
   display: flex;
   flex-direction: column;
-  flex: 3;
-  text-align: center;
+  flex: 1;
+  padding-bottom: 20px;
 }
 
 .new-options {
-  flex: 3;
-  text-align: center;
-}
-
-.middle-or {
   flex: 1;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  padding-bottom: 20px;
 }
 
 button {
@@ -45,7 +34,7 @@ button {
   background-color: blueviolet; /* Add a blue color for the buttons */
   color: white;
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-  border-radius: 15px;
+  /* border-radius: 15px; */
 }
 
 .buttons {
@@ -60,15 +49,19 @@ button {
   height: 70px;
   margin: 30px;
   box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(#9600d1, #570068);
-  font-size: 20px;
+  background: purple;
+  /* background: blueviolet; */
+  /* background: linear-gradient(#9600d1, #570068); */
+  font-size: 22px;
+  letter-spacing: 0.05rem;
   font-family: 'Arial', 'Lato', sans-serif;
 }
 
 .buttons button:hover {
-  background-color: blue;
+  background: blueviolet;
+  /* background: purple; */
+  /* background-color: blue; */
   color: white;
-  border-color: black;
   border: 2px solid black;
   padding: 19px 30px;
 }
@@ -77,20 +70,18 @@ button {
   width: 15vw;
   margin: 0 auto;
   justify-content: top;
-  display: flex;
-  flex-direction: column;
-  white-space: pre-wrap;
   text-align: left;
-  color: black;
   font-size: 20px;
+  z-index: 1;
+  position: relative;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
-  background: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adding a subtle box shadow */
+  background: white;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
   font-size: 20px;
 }
 

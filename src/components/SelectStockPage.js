@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './SelectStockPage.css';
 import HeadingBanner from './HeadingBanner';
+import NextPageButton from './NextPageButton';
 import AsyncSelect from 'react-select/async';
 import { createFilter } from 'react-select';
 
@@ -30,7 +31,7 @@ const DataTable = ({ ticker }) => {
     return dataColumns;
   }
   useEffect(() => {
-    axios.get(`http://127.0.0.1:5000/api/get_months_data?ticker=${ticker}`)
+    axios.get(`${process.env.REACT_APP_API_URL}/get_months_data?ticker=${ticker}`)
       .then(response => response.data)
       .then(result => getDataColumns(result))
       .then(dataColumns => setDataColumns(dataColumns))
@@ -78,7 +79,7 @@ const DataTable = ({ ticker }) => {
   // get callsRemaining make sure it only computes once
   const [callsRemaining, setCallsRemaining] = useState(25);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:5000/api/get_remaining_calls`)
+    axios.get(`${process.env.REACT_APP_API_URL}/get_remaining_calls`)
       .then(response => setCallsRemaining(response.data))
       .catch(error => console.error('Error getting remaining api calls: ', error));
   }, []);
@@ -116,8 +117,10 @@ const DataTable = ({ ticker }) => {
   // }
 
   return (
-    <div className='data-table-container'>
-      <h2>Data for {ticker} exists for the following months: </h2>
+    <div>
+      <h2>Data For {ticker}</h2>
+      <p>Current cost to download data: {cost}</p>
+      <p>Calls remaining: {callsRemaining}</p>
       <table>
         <thead>
           <tr>
@@ -149,8 +152,6 @@ const DataTable = ({ ticker }) => {
         <button onClick={() => setCheckboxes(checkboxes.map(checkbox => checkbox[0] ? [true, true] : [false, false]))}>Tick all</button>
         <button>Download Data</button>
       </div>
-      <p>Current cost to download data: {cost}</p>
-      <p>Calls remaining: {callsRemaining}</p>
     </div>
   )
 }
@@ -188,7 +189,7 @@ const TickerOptions = ({ setTicker }) => {
 
   // get ticker options inside useEffect with empty dependency array so it only runs once.
   useEffect(() => {
-    axios.get(`http://127.0.0.1:5000/api/list_ticker_options`)
+    axios.get(`${process.env.REACT_APP_API_URL}/list_ticker_options`)
       .then(response => setTickerOptions(response.data))
       .catch(error => console.error('Error getting ticker options: ', error));
   }, []);
@@ -197,18 +198,15 @@ const TickerOptions = ({ setTicker }) => {
     <>
       <div className='both-options'>
         <div className='loaded-options'>
-          <h1>Select from already loaded datasets</h1>
+          <h1>Select From Loaded Datasets</h1>
           <div className='buttons'>
             {tickerOptions.map((tickerOption, index) => (
               <button key={index} onClick={(e) => setTicker(e.target.innerText)}>{tickerOption}</button>
             ))}
           </div>
         </div>
-        <div className='middle-or'>
-          <h2>OR</h2>
-        </div>
         <div className='new-options'>
-          <h1>Search for a stock to download its data</h1>
+          <h1>Download New Stock Data</h1>
           <SelectTicker setTicker={setTicker} />
         </div>
       </div>
@@ -221,15 +219,11 @@ const SelectStock = () => {
   
   return (
     <>
-      <HeadingBanner title={'STOCK SELECTION'} backButtonPath={'/trading-simulator'} />
-      <div className='select-stock-background'>
-        <div className='select-stock-body'>
-          <TickerOptions setTicker={setTicker} />
-          <DataTable ticker={ticker} />
-          <Link to={`/trading-simulator/Simulator/${ticker}`} className='simulator-button'>
-            <button>Start Simulator{'->'}</button>
-          </Link>
-        </div>
+      <HeadingBanner title='STOCK SELECTION' backButtonPath='/trading-simulator' />
+      <div className='select-stock-body'>
+        <TickerOptions setTicker={setTicker} />
+        <DataTable ticker={ticker} />
+        <NextPageButton buttonPath={`/trading-simulator/Simulator/${ticker}`} buttonText='Start Simulator ->' />
       </div>
     </>
   );

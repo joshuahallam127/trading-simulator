@@ -6,6 +6,7 @@ import moment from 'moment';
 import { Line } from 'react-chartjs-2';
 import HeadingBanner from './HeadingBanner';
 import './SimulatorPage.css';
+import NextPageButton from './NextPageButton';
 
 const StockChart = ({data, onIntervalChange, title, idx, setIdx }) => {
   // data to show on the chart
@@ -183,7 +184,7 @@ const Simulator = () => {
   const [sharePrice, setSharePrice] = useState(10);
   const [datasets, setDatasets] = useState({'1day': [], '1min': []});
   useEffect(() => {
-    axios.get(`http://127.0.0.1:5000/api/get_data?ticker=${ticker}`)
+    axios.get(`${process.env.REACT_APP_API_URL}/get_data?ticker=${ticker}`)
     .then(response => {
       setDatasets(response.data);
       return response.data['1day'][0][1];
@@ -192,17 +193,19 @@ const Simulator = () => {
     .catch(error => console.error('Error loading data: ', error));
   }, []);
 
+  // store results for when user clicks next page
+  const [results, setResults] = useState({startingBalance: 1000, endingBalance: 1000, profit: 0});
+  
+
   return (
     <>
-      <HeadingBanner title={'SIMULATOR'} backButtonPath={'/trading-simulator/SelectStock'} />
-      <div className='simulator-background'>
+      <HeadingBanner title={'TRADING SIMULATOR'} backButtonPath={'/trading-simulator/SelectStock'} />
+      <div className='simulator-body'>
         <h3>Trading: {ticker}</h3>
         <h3>Current share price: {sharePrice}</h3>
         <BuyStock sharePrice={sharePrice}/>
         <StockCharts datasets={datasets} setSharePrice={setSharePrice}/>
-        <Link to={`/trading-simulator/Close`} className='close-trading-button'>
-          <button>Close Trading{'->'}</button>
-        </Link>
+        <NextPageButton buttonPath={`/trading-simulator/Results/${ticker}`} buttonText='See Results ->' />
       </div>
     </>
   )

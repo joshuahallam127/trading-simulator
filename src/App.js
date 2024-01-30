@@ -5,7 +5,7 @@ import HeadingBanner from './components/HeadingBanner';
 
 const checkTaskStatus = (taskId) => {
   // send request to celery server to see if task is done
-  axios.get(`http://127.0.0.1:5000/api/check_task_status?task_id=${taskId}`)
+  axios.get(`${process.env.REACT_APP_API_URL}/check_task_status?task_id=${taskId}`)
     .then(response => {
       // this might need to be triple equal signs idk thooo. 
       if (response.data === 'COPMLETED') {
