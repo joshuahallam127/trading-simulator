@@ -94,7 +94,8 @@
 }
 
 .download-buttons button:hover {
-  background-color: #172f58;
+  /* background-color: #172f58; */
+  background-color: #1c3868;
   color: white;
   border-color: black;
   border: 2px solid black;
@@ -136,4 +137,9 @@
   background: #112240;
   border: 2px solid black;
   padding: 19px 29px;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
 }

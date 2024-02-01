@@ -7,12 +7,11 @@ import { Link } from 'react-router-dom';
 import MoonLoader from 'react-spinners/MoonLoader';
 import { Navigate } from 'react-router-dom';
 
-const DataTable = ({ monthsHeadersAll, monthsHeadersHave }) => {
+const DataTable = ({ monthsHeadersAll, monthsHeadersHave, loadingMonths }) => {
   // array defining if there is a checkbox for that month, and if so whether it is checked
   // each element of the form (is there a checkbox, is it checked)
   const [checkboxes, setCheckboxes] = useState(monthsHeadersAll.map(() => [false, false]));
   useEffect(() => {
-    console.log('updating checkboxes');
     setCheckboxes(monthsHeadersAll.map((column) => monthsHeadersHave.includes(column) ? [false, false] : [true, false]));
   }, [monthsHeadersHave, monthsHeadersAll])
     
@@ -90,33 +89,49 @@ const DataTable = ({ monthsHeadersAll, monthsHeadersHave }) => {
   //   fetchData();
   // }
 
+  const MyTable = () => {
+    if (loadingMonths) {
+      return (
+        <div style={{margin:'50px', display: 'flex', justifyContent: 'center' }}>
+          <MoonLoader size={150} color={'#8892b0'} loading={loadingMonths} />
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div className='my-table'>
+            {monthsHeadersAll.map((column, index) => (
+              <div key={index} className='my-box'>
+                <h5>{column.split(' ')[0]}</h5>
+                <h5>{column.split(' ')[1]}</h5>
+                <p>{checkboxes[index][0] ? 
+                  (
+                  <>
+                    <input 
+                      type='checkbox' 
+                      checked={checkboxes[index][1]} 
+                      onChange={() => handleCheckboxClick(index)}
+                    />
+                    {'❌'}         
+                  </>
+                  ) : '✔️'}</p>
+              </div>
+            ))}
+          </div>
+          <div className='download-buttons'>
+            <button onClick={() => setCheckboxes(checkboxes.map(checkbox => checkbox[0] ? [true, true] : [false, false]))}>Tick all</button>
+            <button>Download Data</button>
+          </div>
+        </div>
+      )
+    }
+  }
+
   return (
     <div>
       <p>Current cost to download data: {cost}</p>
       <p>Calls remaining: {callsRemaining}</p>
-      <div className='my-table'>
-        {checkboxes.map((tuple, index) => (
-          <div key={index} className='my-box'>
-            <h5>{monthsHeadersAll[index].split(' ')[0]}</h5>
-            <h5>{monthsHeadersAll[index].split(' ')[1]}</h5>
-            <p>{tuple[0] ? 
-              (
-              <>
-                <input 
-                  type='checkbox' 
-                  checked={tuple[1]} 
-                  onChange={() => handleCheckboxClick(index)}
-                />
-                {'❌'}         
-              </>
-              ) : '✔️'}</p>
-          </div>
-        ))}
-      </div>
-      <div className='download-buttons'>
-        <button onClick={() => setCheckboxes(checkboxes.map(checkbox => checkbox[0] ? [true, true] : [false, false]))}>Tick all</button>
-        <button>Download Data</button>
-      </div>
+      <MyTable />
     </div>
   )
 }
@@ -166,9 +181,27 @@ const SearchTicker = ({ handleTickerChange }) => {
   )
 }
 
-const SelectStock = ({ ticker, setTicker, setMonthsHeadersHave }) => {
+const SelectStock = ({ ticker, setTicker, setMonthsHeadersHave, setLoadingMonths }) => {
   // whether or not we are loading the ticker options
-  const [loading, setLoading] = useState(true);
+  const [loadingTickers, setLoadingTickers] = useState(true);
+  
+  // update the months data when the ticker changes
+  const handleTickerChange = (newTicker) => {
+    setTicker(newTicker)
+    setLoadingMonths(true);
+    axios.get(`${process.env.REACT_APP_API_URL}/get_months_data?ticker=${newTicker}`)
+      .then(response => response.data)
+      .then(result => {
+        const monthsHeaders = [];
+        for (let date = new Date(result[0]); date < new Date(result[1]); date.setMonth(date.getMonth() + 1)) {
+          const formattedDate = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(date);
+          monthsHeaders.push(formattedDate);
+        }
+        setMonthsHeadersHave(monthsHeaders);
+        setLoadingMonths(false);
+      })
+      .catch(error => console.error('Error getting months data: ', error));
+  }
   
   // get ticker options inside useEffect with empty dependency array so it only runs once.
   const [tickerOptions, setTickerOptions] = useState([]);
@@ -180,36 +213,22 @@ const SelectStock = ({ ticker, setTicker, setMonthsHeadersHave }) => {
     axios.get(`${process.env.REACT_APP_API_URL}/list_ticker_options`)
       .then(response => {
         setTickerOptions(response.data);
-        setLoading(false);
+        setLoadingTickers(false);
+        handleTickerChange(response.data[0]);
       })
       .catch(error => console.error('Error getting ticker options: ', error));
   }, []);
 
-  // update the months data when the ticker changes
-  const handleTickerChange = (newTicker) => {
-    console.log('updating ticker and getting months data');
-    setTicker(newTicker)
-    axios.get(`${process.env.REACT_APP_API_URL}/get_months_data?ticker=${newTicker}`)
-      .then(response => response.data)
-      .then(result => {
-        const monthsHeaders = [];
-        for (let date = new Date(result[0]); date < new Date(result[1]); date.setMonth(date.getMonth() + 1)) {
-          const formattedDate = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(date);
-          monthsHeaders.push(formattedDate);
-        }
-        setMonthsHeadersHave(monthsHeaders);
-      })
-      .catch(error => console.error('Error getting months data: ', error));
-  }
 
+  // see if i can remove the loadingtickers conditional
   return (
     <div className='step-container'>
       <h1>Step 1. Choose Stock</h1>
       <h2>Choose From Loaded Datasets</h2>
       <div className='ticker-buttons'>
-        {loading && (
+        {loadingTickers && (
           <div style={{margin:'50px'}}>
-            <MoonLoader size={150} color={'#8892b0'} loading={loading} />
+            <MoonLoader size={150} color={'#8892b0'} loading={loadingTickers} />
           </div>
         )}
         {tickerOptions.map((tickerOption, index) => (
@@ -231,7 +250,20 @@ const SelectStock = ({ ticker, setTicker, setMonthsHeadersHave }) => {
   )
 }
 
-const SelectTimeframe = ({ ticker, months, startMonthIdx, setStartMonthIdx, endMonthIdx, setEndMonthIdx, setMonthsConfirmed }) => {
+const SelectTimeframe = ({ ticker, months, startMonthIdx, setStartMonthIdx, endMonthIdx, setEndMonthIdx, monthsConfirmed, setMonthsConfirmed, loadingMonths }) => {
+  // store all the colours needed and then index them or something.... might be best way lol
+  const [monthColours, setMonthColours] = useState(months.map((_, index) => index >= startMonthIdx && index <= endMonthIdx ? '#3d4f81' : '#172f58'));
+  // this can't be null or check if it is
+
+  // update monthColours when months changes
+  useEffect(() => {
+    if (monthsConfirmed) {
+      setMonthColours(months.map((_, index) => index >= startMonthIdx && index <= endMonthIdx ? '#22437c' : '#172f58'))
+    } else {
+      setMonthColours(months.map((_, index) => index >= startMonthIdx && index <= endMonthIdx ? '#3d4f81' : '#172f58'))
+    }
+  }, [months, startMonthIdx, endMonthIdx, monthsConfirmed])
+  
   // get the column headers for the months we actually have
   const [choosingStartMonth, setChoosingStartMonth] = useState(true);
   useEffect(() => {
@@ -268,21 +300,78 @@ const SelectTimeframe = ({ ticker, months, startMonthIdx, setStartMonthIdx, endM
     }
   }
 
-  const clickedColour = '#3d4f81';
-  const confirmedColour = '#172f58';
+  const TimeFrameBody = () => {
+    if (loadingMonths) {
+      return (
+        <div style={{margin:'50px', display: 'flex', justifyContent: 'center'}}>
+          <MoonLoader size={100} color={'#8892b0'} loading={loadingMonths} />
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div className='button-pair'>
+          <button 
+            className='left-button'
+            onClick={() => {
+              setChoosingStartMonth(true);
+              setMonthsConfirmed(false);
+              setStartMonthIdx(-1);
+              setEndMonthIdx(-1);
+            }}
+            style={{backgroundColor: choosingStartMonth && !monthsConfirmed ? `#3d4f81` : '#172f58'}}  
+          >
+            Select Start Month
+          </button>
+          <button 
+            className='right-button'
+            onClick={() => {
+              if (startMonthIdx === -1) return;
+              setChoosingStartMonth(false);
+              setMonthsConfirmed(false);
+            }}
+            style={{backgroundColor: !choosingStartMonth && !monthsConfirmed ? '#3d4f81' : '#172f58'}}
+          >
+            Select End Month
+          </button>
+        </div>
+        <div className='my-table'>
+          {months.map((column, index) => (
+            <button 
+              key={index} 
+              className='my-box-button'
+              style={{backgroundColor: monthColours[index]}}
+              // style={{backgroundColor: index >= startMonthIdx && index <= endMonthIdx ? '#3d4f81' : '#172f58'}}
+              onClick={() => handleMonthClick(index)}
+            >
+              <h5>{column.split(' ')[0]}</h5>
+              <h5>{column.split(' ')[1]}</h5>
+            </button>
+          ))}
+        </div>
+        <div className='next-page-button'>
+          <button style={{margin: '20px'}} onClick={handleConfirmClick}>Confirm</button>
+        </div>
+      </div>
+      )
+    }
+  }
 
   return (
     <div className='step-container'>
       <h1>Step 3. Choose Timeframe</h1>
       <h2>Select Months to Trade From and Until</h2>
-      <div className='button-pair'>
+      <TimeFrameBody />
+      {/* <div className='button-pair'>
         <button 
           className='left-button'
           onClick={() => {
             setChoosingStartMonth(true);
             setMonthsConfirmed(false);
+            setStartMonthIdx(-1);
+            setEndMonthIdx(-1);
           }}
-          style={{backgroundColor: choosingStartMonth ? `#3d4f81` : '#172f58'}}  
+          style={{backgroundColor: choosingStartMonth && !monthsConfirmed ? `#3d4f81` : '#172f58'}}  
         >
           Select Start Month
         </button>
@@ -292,7 +381,7 @@ const SelectTimeframe = ({ ticker, months, startMonthIdx, setStartMonthIdx, endM
             setChoosingStartMonth(false);
             setMonthsConfirmed(false);
           }}
-          style={{backgroundColor: !choosingStartMonth ? '#3d4f81' : '#172f58'}}
+          style={{backgroundColor: !choosingStartMonth && !monthsConfirmed ? '#3d4f81' : '#172f58'}}
         >
           Select End Month
         </button>
@@ -302,7 +391,8 @@ const SelectTimeframe = ({ ticker, months, startMonthIdx, setStartMonthIdx, endM
           <button 
             key={index} 
             className='my-box-button'
-            style={{backgroundColor: index >= startMonthIdx && index <= endMonthIdx ? '#3d4f81' : '#172f58'}}
+            style={{backgroundColor: monthColours[index]}}
+            // style={{backgroundColor: index >= startMonthIdx && index <= endMonthIdx ? '#3d4f81' : '#172f58'}}
             onClick={() => handleMonthClick(index)}
           >
             <h5>{column.split(' ')[0]}</h5>
@@ -312,7 +402,7 @@ const SelectTimeframe = ({ ticker, months, startMonthIdx, setStartMonthIdx, endM
       </div>
       <div className='next-page-button'>
         <button style={{margin: '20px'}} onClick={handleConfirmClick}>Confirm</button>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -359,12 +449,12 @@ const Simulator = ({ ticker,  months, startMonthIdx, endMonthIdx, monthsConfirme
   )
 }
 
-const DownloadData = ({ ticker, monthsHeadersAll, monthsHeadersHave }) => {
+const DownloadData = ({ ticker, monthsHeadersAll, monthsHeadersHave, loadingMonths }) => {
   return (
     <div className='step-container'>
       <h1>Step 2. Download New Data <span style={{ color: '#8892b0' }}>(optional)</span></h1>
       <h2>Tick Months You Wish to Download</h2>
-      <DataTable ticker={ticker} monthsHeadersAll={monthsHeadersAll} monthsHeadersHave={monthsHeadersHave} />
+      <DataTable ticker={ticker} monthsHeadersAll={monthsHeadersAll} monthsHeadersHave={monthsHeadersHave} loadingMonths={loadingMonths}/>
     </div>
   );
 }
@@ -389,6 +479,7 @@ const UpdatedPage = () => {
 
   // get the column headers for all the months we have for the ticker, update when ticker changes
   const [monthsHeadersHave, setMonthsHeadersHave] = useState([]);
+  const [loadingMonths, setLoadingMonths] = useState(true);
 
   const [startMonthIdx, setStartMonthIdx] = useState(-1);
   const [endMonthIdx, setEndMonthIdx] = useState(-1);
@@ -398,8 +489,8 @@ const UpdatedPage = () => {
     <div className='background-new'>
       <HeadingBanner />
       <div className='body-container'>
-        <SelectStock ticker={ticker} setTicker={setTicker} setMonthsHeadersHave={setMonthsHeadersHave}/>
-        <DownloadData ticker={ticker} monthsHeadersAll={monthsHeadersAll.current} monthsHeadersHave={monthsHeadersHave}/>
+        <SelectStock ticker={ticker} setTicker={setTicker} setMonthsHeadersHave={setMonthsHeadersHave} setLoadingMonths={setLoadingMonths}/>
+        <DownloadData ticker={ticker} monthsHeadersAll={monthsHeadersAll.current} monthsHeadersHave={monthsHeadersHave} loadingMonths={loadingMonths}/>
         <SelectTimeframe 
           ticker={ticker} 
           months={monthsHeadersHave}
@@ -407,7 +498,9 @@ const UpdatedPage = () => {
           setStartMonthIdx={setStartMonthIdx}
           endMonthIdx={endMonthIdx}
           setEndMonthIdx={setEndMonthIdx}
+          monthsConfirmed={monthsConfirmed}
           setMonthsConfirmed={setMonthsConfirmed}
+          loadingMonths={loadingMonths}
         />
         <Simulator ticker={ticker} months={monthsHeadersHave} startMonthIdx={startMonthIdx} endMonthIdx={endMonthIdx} monthsConfirmed={monthsConfirmed}/>
       </div>

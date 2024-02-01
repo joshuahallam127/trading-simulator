@@ -11,8 +11,8 @@ const HomePage = () => (
       {/* <Link to="/trading-simulator/SelectStock">
         <button>Get Started {'->'}</button>
       </Link> */}
-      <NextPageButton buttonPath='/trading-simulator/SelectStock' buttonText='Get Started ->' />
-      <NextPageButton buttonPath='/trading-simulator/UpdatedPage' buttonText='Updated Page ->' />
+      {/* <NextPageButton buttonPath='/trading-simulator/SelectStock' buttonText='Get Started ->' /> */}
+      <NextPageButton buttonPath='/trading-simulator/UpdatedPage' buttonText='Get Started ->' />
     </div>
 );
 export default HomePage;
