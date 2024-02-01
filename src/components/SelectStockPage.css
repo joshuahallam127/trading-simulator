@@ -31,10 +31,9 @@
 button {
   border: 1px solid black;
   cursor: pointer;
-  background-color: blueviolet; /* Add a blue color for the buttons */
+  background-color: blueviolet;
   color: white;
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-  /* border-radius: 15px; */
 }
 
 .buttons {
@@ -76,16 +75,16 @@ button {
   position: relative;
 }
 
-table {
+/* table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
   background: white;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   font-size: 20px;
-}
+} */
 
-th, td, tr {
+/* th, td, tr {
   padding: 20px;
   text-align: left;
 }
@@ -98,7 +97,7 @@ td input {
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
+} */
 
 .download-buttons button {
   width: 80px;

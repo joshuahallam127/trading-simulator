@@ -1,0 +1,139 @@
+.heading-banner-new {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.body-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20vw;
+}
+
+.icon-new {
+  width: 3rem;
+  padding: 10px;
+}
+
+.background-new {
+  background: #0a192f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px;
+}
+
+.step-container {
+  color: #ccd6f6;
+  font-size: 30px;
+  margin-bottom: 200px;
+}
+
+.step-container h1 {
+  color: #ccd6f6;
+}
+
+.step-container h2, .step-container h3 {
+  color: #8892b0
+}
+
+.step-container h4 {
+  color: #68738f  
+}
+
+.ticker-buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ticker-buttons button {
+  /* background: #112240; */
+  background: #172f58;
+  width: 130px;
+  height: 70px;
+  margin: 30px;
+}
+
+.my-table {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.my-box {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.my-box h5 {
+  margin: 0 10px;
+}
+
+.my-box-button {
+  background: #172f58;
+}
+
+.my-box-button h5 {
+  margin: 10px 10px;
+  font-size: 20px;
+}
+
+.download-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.download-buttons button {
+  background: #112240;
+  width: 130px;
+  height: 70px;
+  margin: 15px;
+}
+
+.download-buttons button:hover {
+  background-color: #172f58;
+  color: white;
+  border-color: black;
+  border: 2px solid black;
+}
+
+.button-pair button {
+  padding: 5px 10px;
+  margin: 10px 0;
+}
+
+.left-button {
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.right-button {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.next-page-button {
+  display: flex;
+  justify-content: center;
+}
+
+.next-page-button button {
+  padding: 20px 30px;
+  border-radius: 15px;
+  border: 1px solid black;
+  cursor: pointer;
+  background: #172f58;
+  color: white;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  font-size: 20px;
+  font-family: 'Arial', 'Lato', sans-serif;
+}
+
+.next-page-button button:hover {
+  background: #112240;
+  border: 2px solid black;
+  padding: 19px 29px;
+}

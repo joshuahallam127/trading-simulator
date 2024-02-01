@@ -8,6 +8,7 @@ import HomePage from './components/HomePage';
 import SelectStock from './components/SelectStockPage';
 import Simulator from './components/SimulatorPage';
 import Results from './components/ResultsPage';
+import UpdatedPage from './components/UpdatedPage';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: '/trading-simulator/Results/:resultsArray',
     element: <Results />,
+  },
+  {
+    path: '/trading-simulator/UpdatedPage',
+    element: <UpdatedPage />,
   },
 ]);
 

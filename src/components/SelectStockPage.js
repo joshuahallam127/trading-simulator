@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import './SelectStockPage.css';
 import HeadingBanner from './HeadingBanner';
 import NextPageButton from './NextPageButton';
@@ -188,25 +187,10 @@ const TickerOptions = ({ setTicker }) => {
   const [tickerOptions, setTickerOptions] = useState([]);
 
   // get ticker options inside useEffect with empty dependency array so it only runs once.
-  // useEffect(() => {
-  //   axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/list_ticker_options`, withCredentials:false, headers: { 'Content-Type': 'application/x-www-form-urlencoded'}})
-  //   // axios.get(`${process.env.REACT_APP_API_URL}/list_ticker_options`)
-  //     .then(response => setTickerOptions(response.data))
-  //     .catch(error => console.error('Error getting ticker options: ', error));
-  // }, []);
-  // try using fetch
   useEffect(() => {
-    console.log('actually updates')
-    fetch(`${process.env.REACT_APP_API_URL}/list_ticker_options`, { 
-      method: 'get', 
-      mode: 'cors', 
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      credentials: 'include'})
-    .then(response => response.json())
-    .then(data => setTickerOptions(data))
-    .catch(error => console.error('Error getting ticker options: ', error));
+    axios.get(`${process.env.REACT_APP_API_URL}/list_ticker_options`)
+      .then(response => setTickerOptions(response.data))
+      .catch(error => console.error('Error getting ticker options: ', error));
   }, []);
 
   return (
