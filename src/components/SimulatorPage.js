@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
 import moment from 'moment';
@@ -178,18 +178,20 @@ const BuyStock = ({ sharePrice }) => {
 
 const Simulator = () => {
   // get ticker from url parameter
-  const { ticker } = useParams();
+  const { ticker, startMonth, endMonth } = useParams();
   
   // get data from backend make sure only runs once and update share price
   const [sharePrice, setSharePrice] = useState(10);
   const [datasets, setDatasets] = useState({'1day': [], '1min': []});
+  const apiCalled = useRef(false);
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/get_data?ticker=${ticker}`)
+    if (apiCalled.current) return;
+    apiCalled.current = true;
+    axios.get(`${process.env.REACT_APP_API_URL}/get_data?ticker=${ticker}&startMonth=${startMonth}&endMonth=${endMonth}`)
     .then(response => {
       setDatasets(response.data);
-      return response.data['1day'][0][1];
+      setSharePrice(response.data['1day'][0][1]);
     })
-    .then(sharePrice => setSharePrice(sharePrice))
     .catch(error => console.error('Error loading data: ', error));
   }, []);
 

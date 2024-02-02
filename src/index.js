@@ -8,7 +8,7 @@ import HomePage from './components/HomePage';
 import SelectStock from './components/SelectStockPage';
 import Simulator from './components/SimulatorPage';
 import Results from './components/ResultsPage';
-import UpdatedPage from './components/UpdatedPage';
+import Setup from './components/Setup';
 
 const router = createBrowserRouter([
   {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     element: <SelectStock />,
   },
   {
-    path: '/trading-simulator/Simulator/:ticker',
+    path: '/trading-simulator/Simulator/:ticker/:startMonth/:endMonth',
     element: <Simulator />,
   },
   {
@@ -32,12 +32,12 @@ const router = createBrowserRouter([
     element: <Simulator />,
   },
   {
-    path: '/trading-simulator/Results/:resultsArray',
+    path: '/trading-simulator/Results/:ticker',
     element: <Results />,
   },
   {
-    path: '/trading-simulator/UpdatedPage',
-    element: <UpdatedPage />,
+    path: '/trading-simulator/Setup',
+    element: <Setup />,
   },
 ]);
 

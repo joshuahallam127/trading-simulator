@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './UpdatedPage.css';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import './Setup.css';
 import axios from 'axios';
 import AsyncSelect from 'react-select/async';
 import { createFilter } from 'react-select';
@@ -222,7 +222,7 @@ const SelectStock = ({ ticker, setTicker, setMonthsHeadersHave, setLoadingMonths
 
   // see if i can remove the loadingtickers conditional
   return (
-    <div className='step-container'>
+    <div className='step'>
       <h1>Step 1. Choose Stock</h1>
       <h2>Choose From Loaded Datasets</h2>
       <div className='ticker-buttons'>
@@ -250,7 +250,7 @@ const SelectStock = ({ ticker, setTicker, setMonthsHeadersHave, setLoadingMonths
   )
 }
 
-const SelectTimeframe = ({ ticker, months, startMonthIdx, setStartMonthIdx, endMonthIdx, setEndMonthIdx, monthsConfirmed, setMonthsConfirmed, loadingMonths }) => {
+const SelectTimeframe = forwardRef(({ ticker, months, startMonthIdx, setStartMonthIdx, endMonthIdx, setEndMonthIdx, monthsConfirmed, setMonthsConfirmed, loadingMonths }, ref) => {
   // store all the colours needed and then index them or something.... might be best way lol
   const [monthColours, setMonthColours] = useState(months.map((_, index) => index >= startMonthIdx && index <= endMonthIdx ? '#3d4f81' : '#172f58'));
   // this can't be null or check if it is
@@ -358,65 +358,26 @@ const SelectTimeframe = ({ ticker, months, startMonthIdx, setStartMonthIdx, endM
   }
 
   return (
-    <div className='step-container'>
+    <div ref={ref} className='step'>
       <h1>Step 3. Choose Timeframe</h1>
       <h2>Select Months to Trade From and Until</h2>
       <TimeFrameBody />
-      {/* <div className='button-pair'>
-        <button 
-          className='left-button'
-          onClick={() => {
-            setChoosingStartMonth(true);
-            setMonthsConfirmed(false);
-            setStartMonthIdx(-1);
-            setEndMonthIdx(-1);
-          }}
-          style={{backgroundColor: choosingStartMonth && !monthsConfirmed ? `#3d4f81` : '#172f58'}}  
-        >
-          Select Start Month
-        </button>
-        <button 
-          className='right-button'
-          onClick={() => {
-            setChoosingStartMonth(false);
-            setMonthsConfirmed(false);
-          }}
-          style={{backgroundColor: !choosingStartMonth && !monthsConfirmed ? '#3d4f81' : '#172f58'}}
-        >
-          Select End Month
-        </button>
-      </div>
-      <div className='my-table'>
-        {months.map((column, index) => (
-          <button 
-            key={index} 
-            className='my-box-button'
-            style={{backgroundColor: monthColours[index]}}
-            // style={{backgroundColor: index >= startMonthIdx && index <= endMonthIdx ? '#3d4f81' : '#172f58'}}
-            onClick={() => handleMonthClick(index)}
-          >
-            <h5>{column.split(' ')[0]}</h5>
-            <h5>{column.split(' ')[1]}</h5>
-          </button>
-        ))}
-      </div>
-      <div className='next-page-button'>
-        <button style={{margin: '20px'}} onClick={handleConfirmClick}>Confirm</button>
-      </div> */}
     </div>
   );
-}
+});
 
 const Simulator = ({ ticker,  months, startMonthIdx, endMonthIdx, monthsConfirmed }) => {
   // see if clicked button and will reroute if has
   const [clicked, setClicked] = useState(false);
+  const [startMonth, setStartMonth] = useState('');
+  const [endMonth, setEndMonth] = useState('');
 
   // format the date to be in the format needed by the mysql database
-  const formatDate = (date) => {
+  const formatDate = (date, isStart) => {
     const [month, year] = date.split(' ');
     const monthNumber = new Date(Date.parse(month + ' 1, 2020')).getMonth() + 1;
     const formattedMonth = monthNumber < 10 ? `0${monthNumber}` : monthNumber;
-    return `${year}-${formattedMonth}-01`;
+    return `${year}-${formattedMonth}-${isStart ? '01' : '31'}`;
   }
   
   const handleClick = () => {
@@ -425,24 +386,17 @@ const Simulator = ({ ticker,  months, startMonthIdx, endMonthIdx, monthsConfirme
       return;
     }
     // get start and end months as strings
-    const startMonth = formatDate(months[startMonthIdx]);
-    const endMonth = formatDate(months[endMonthIdx]);
-
-    // create argument for simulator
-    const simulatorArgs = {
-      ticker: ticker,
-      start_month: startMonth,
-      end_month: endMonth,
-    }
+    setStartMonth(formatDate(months[startMonthIdx], true));
+    setEndMonth(formatDate(months[endMonthIdx], false));
 
     setClicked(true);
   }
 
   return (
-    <div className='step-container'>
+    <div className='step'>
       <h1>Step 4. Trade!</h1>
       <div className='next-page-button'>
-        {clicked && <Navigate to={`/trading-simulator/Simulator/${ticker}`} />}
+        {clicked && <Navigate to={`/trading-simulator/Simulator/${ticker}/${startMonth}/${endMonth}`} />}
         <button onClick={handleClick}>Let's Go! {'->'}</button>
       </div>
     </div>
@@ -451,7 +405,7 @@ const Simulator = ({ ticker,  months, startMonthIdx, endMonthIdx, monthsConfirme
 
 const DownloadData = ({ ticker, monthsHeadersAll, monthsHeadersHave, loadingMonths }) => {
   return (
-    <div className='step-container'>
+    <div className='step'>
       <h1>Step 2. Download New Data <span style={{ color: '#8892b0' }}>(optional)</span></h1>
       <h2>Tick Months You Wish to Download</h2>
       <DataTable ticker={ticker} monthsHeadersAll={monthsHeadersAll} monthsHeadersHave={monthsHeadersHave} loadingMonths={loadingMonths}/>
@@ -459,7 +413,24 @@ const DownloadData = ({ ticker, monthsHeadersAll, monthsHeadersHave, loadingMont
   );
 }
 
-const UpdatedPage = () => {
+const StepContainer = forwardRef(({ gotoRef, children }, ref) => {
+
+  const scrollToStep = (ref) => {
+    ref.current.scrollIntoView({behavior: 'smooth'});
+  }
+
+  return (
+    <div ref={ref} className='step-container'>
+      <div className='side-bar'></div>
+      {children}
+      <div className='side-bar'>
+        {gotoRef && <button onClick={() => scrollToStep(gotoRef)}>▼</button>}
+      </div>
+    </div>
+  )
+});
+
+const Setup = () => {
   // useState variables needed by multiple components
   const [ticker, setTicker] = useState('');
 
@@ -485,27 +456,43 @@ const UpdatedPage = () => {
   const [endMonthIdx, setEndMonthIdx] = useState(-1);
   const [monthsConfirmed, setMonthsConfirmed] = useState(false);
   
+  const chooseStockRef = useRef(null);
+  const downloadDataRef = useRef(null);
+  const selectTimeframeRef = useRef(null);
+  const simulatorRef = useRef(null);
+
   return (
     <div className='background-new'>
       <HeadingBanner />
       <div className='body-container'>
-        <SelectStock ticker={ticker} setTicker={setTicker} setMonthsHeadersHave={setMonthsHeadersHave} setLoadingMonths={setLoadingMonths}/>
-        <DownloadData ticker={ticker} monthsHeadersAll={monthsHeadersAll.current} monthsHeadersHave={monthsHeadersHave} loadingMonths={loadingMonths}/>
-        <SelectTimeframe 
-          ticker={ticker} 
-          months={monthsHeadersHave}
-          startMonthIdx={startMonthIdx}
-          setStartMonthIdx={setStartMonthIdx}
-          endMonthIdx={endMonthIdx}
-          setEndMonthIdx={setEndMonthIdx}
-          monthsConfirmed={monthsConfirmed}
-          setMonthsConfirmed={setMonthsConfirmed}
-          loadingMonths={loadingMonths}
-        />
-        <Simulator ticker={ticker} months={monthsHeadersHave} startMonthIdx={startMonthIdx} endMonthIdx={endMonthIdx} monthsConfirmed={monthsConfirmed}/>
+        <StepContainer ref={chooseStockRef} gotoRef={downloadDataRef} >
+          <SelectStock ticker={ticker} setTicker={setTicker} setMonthsHeadersHave={setMonthsHeadersHave} setLoadingMonths={setLoadingMonths}/>
+        </StepContainer>
+
+        <StepContainer ref={downloadDataRef} gotoRef={selectTimeframeRef} >
+          <DownloadData ticker={ticker} monthsHeadersAll={monthsHeadersAll.current} monthsHeadersHave={monthsHeadersHave} loadingMonths={loadingMonths}/>
+        </StepContainer>
+        
+        <StepContainer ref={selectTimeframeRef} gotoRef={simulatorRef} >
+          <SelectTimeframe 
+            ticker={ticker} 
+            months={monthsHeadersHave}
+            startMonthIdx={startMonthIdx}
+            setStartMonthIdx={setStartMonthIdx}
+            endMonthIdx={endMonthIdx}
+            setEndMonthIdx={setEndMonthIdx}
+            monthsConfirmed={monthsConfirmed}
+            setMonthsConfirmed={setMonthsConfirmed}
+            loadingMonths={loadingMonths}
+          />
+        </StepContainer>
+
+        <StepContainer ref={simulatorRef} gotoRef={null} >
+          <Simulator ticker={ticker} months={monthsHeadersHave} startMonthIdx={startMonthIdx} endMonthIdx={endMonthIdx} monthsConfirmed={monthsConfirmed}/>
+        </StepContainer>
       </div>
     </div>
   )
 }
 
-export default UpdatedPage;
+export default Setup;

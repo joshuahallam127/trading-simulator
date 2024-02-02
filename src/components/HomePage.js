@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './HomePage.css';
 import NextPageButton from './NextPageButton';
 
@@ -8,11 +7,7 @@ const HomePage = () => (
       <h3>Welcome To</h3>
       <h1>The Trading Simulator</h1>
       <h2>Learn to Earn!</h2>
-      {/* <Link to="/trading-simulator/SelectStock">
-        <button>Get Started {'->'}</button>
-      </Link> */}
-      {/* <NextPageButton buttonPath='/trading-simulator/SelectStock' buttonText='Get Started ->' /> */}
-      <NextPageButton buttonPath='/trading-simulator/UpdatedPage' buttonText='Get Started ->' />
+      <NextPageButton buttonPath='/trading-simulator/Setup' buttonText='Get Started ->' />
     </div>
 );
 export default HomePage;
