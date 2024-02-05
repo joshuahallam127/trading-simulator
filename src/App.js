@@ -8,7 +8,7 @@ const checkTaskStatus = (taskId) => {
   axios.get(`${process.env.REACT_APP_API_URL}/check_task_status?task_id=${taskId}`)
     .then(response => {
       // this might need to be triple equal signs idk thooo. 
-      if (response.data === 'COPMLETED') {
+      if (response.data === 'COMPLETED') {
         console.log('task completed');
       } else {
         console.log(response.data);

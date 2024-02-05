@@ -6,7 +6,6 @@ import moment from 'moment';
 import { Line } from 'react-chartjs-2';
 import HeadingBanner from './HeadingBanner';
 import './SimulatorPage.css';
-import NextPageButton from './NextPageButton';
 
 const StockChart = ({data, onIntervalChange, title, idx, setIdx }) => {
   // data to show on the chart
@@ -40,11 +39,7 @@ const StockChart = ({data, onIntervalChange, title, idx, setIdx }) => {
     ],
   };
 
-  // go back or forward in the chart by one interval
-  const goBackInterval = () => {
-    idx < intervalStep ? setIdx(0) : setIdx(idx - intervalStep);
-    onIntervalChange('back', title);
-  }
+  // go forward in the chart
   const goForwardInterval = () => {
     idx + intervalStep >= data.length ? setIdx(data.length - 1) : setIdx(idx + intervalStep);
     onIntervalChange('forward', title);
@@ -59,7 +54,6 @@ const StockChart = ({data, onIntervalChange, title, idx, setIdx }) => {
     <div className='stock-chart'>
       <h4>{title}</h4>
       <Line data={chartData} />
-      <button onClick={goBackInterval}>prev</button>
       <button onClick={goForwardInterval}>next</button>
       {title === 'Intraday' && (
         <>
@@ -195,19 +189,14 @@ const Simulator = () => {
     .catch(error => console.error('Error loading data: ', error));
   }, []);
 
-  // store results for when user clicks next page
-  const [results, setResults] = useState({startingBalance: 1000, endingBalance: 1000, profit: 0});
-  
-
   return (
     <>
-      <HeadingBanner title={'TRADING SIMULATOR'} backButtonPath={'/trading-simulator/SelectStock'} />
+      <HeadingBanner title={'TRADING SIMULATOR'} backButtonPath={'/trading-simulator/Setup'} />
       <div className='simulator-body'>
         <h3>Trading: {ticker}</h3>
         <h3>Current share price: {sharePrice}</h3>
         <BuyStock sharePrice={sharePrice}/>
         <StockCharts datasets={datasets} setSharePrice={setSharePrice}/>
-        <NextPageButton buttonPath={`/trading-simulator/Results/${ticker}`} buttonText='See Results ->' />
       </div>
     </>
   )

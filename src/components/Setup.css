@@ -7,7 +7,14 @@
 .body-container {
   display: flex;
   flex-direction: column;
-  /* padding: 0 20vw; */
+  padding: 0 19vw;
+  font-size: 30px;
+}
+
+.body-container button {
+  border: 1px solid black;
+  cursor: pointer;
+  color: white;
 }
 
 .icon-new {
@@ -23,33 +30,13 @@
   padding: 20px 30px;
 }
 
-.step-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-bottom: 200px;
-}
-
-.side-bar {
-  display: flex;
-  width: 20vw;
-  justify-content: center;
-  align-items: center;
-}
-
-.side-bar button {
-  background: #172f58;
-  width: 50px;
-  height: 50px;
-  margin: 15px;
-  border-radius: 50%;
-  font-size: 20px;
+.side-bar button:hover {
+  background: #112240;
 }
 
 .step {
   color: #ccd6f6;
-  font-size: 30px;
-  width: 60vw;
+  margin-bottom: 200px;
 }
 
 .step h1 {
@@ -74,9 +61,23 @@
 .ticker-buttons button {
   /* background: #112240; */
   background: #172f58;
+  border: 1px solid black;
+  cursor: pointer;
+  color: white;
   width: 130px;
   height: 70px;
   margin: 30px;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.async-select-container {
+  width: 15vw;
+  margin: 0 auto;
+  justify-content: top;
+  text-align: left;
+  font-size: 20px;
+  z-index: 1;
+  position: relative;
 }
 
 .my-table {

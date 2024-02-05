@@ -1,13 +1,10 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import HomePage from './components/HomePage';
-import SelectStock from './components/SelectStockPage';
 import Simulator from './components/SimulatorPage';
-import Results from './components/ResultsPage';
 import Setup from './components/Setup';
 
 const router = createBrowserRouter([
@@ -16,28 +13,12 @@ const router = createBrowserRouter([
     element: <HomePage />,
   },
   {
-    path: '/trading-simulator/App',
-    element: <App />,
-  },
-  {
-    path: '/trading-simulator/SelectStock',
-    element: <SelectStock />,
+    path: '/trading-simulator/Setup',
+    element: <Setup />,
   },
   {
     path: '/trading-simulator/Simulator/:ticker/:startMonth/:endMonth',
     element: <Simulator />,
-  },
-  {
-    path: '/trading-simulator/About',
-    element: <Simulator />,
-  },
-  {
-    path: '/trading-simulator/Results/:ticker',
-    element: <Results />,
-  },
-  {
-    path: '/trading-simulator/Setup',
-    element: <Setup />,
   },
 ]);
 
