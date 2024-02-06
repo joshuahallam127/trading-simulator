@@ -55,29 +55,26 @@ const StockChart = ({data, onIntervalChange, title, idx, setIdx }) => {
       <h4>{title}</h4>
       <Line data={chartData} />
       <button onClick={goForwardInterval}>next</button>
-      {title === 'Intraday' && (
-        <>
-          <label htmlFor='interval-increment'>Interval increment: </label>
-          <input 
-            type='number' 
-            id='interval-increment-number' 
-            min='1'
-            max='390'
-            step='1'
-            value={intervalStep}
-            onChange={changeIntervalStep} 
-          />
-          <input 
-            type='range' 
-            id='interval-increment-slider'
-            min='1'
-            max='390'
-            step='1'
-            value={intervalStep}
-            onChange={changeIntervalStep}
-          />
-        </>
-      )}
+      <label htmlFor='interval-increment-number'>Interval increment: </label>
+      <input 
+        type='number' 
+        id='interval-increment-number' 
+        min='1'
+        max='390'
+        step='1'
+        value={intervalStep}
+        onChange={changeIntervalStep}
+        placeholder={1}
+      />
+      <input 
+        type='range' 
+        id='interval-increment-slider'
+        min='1'
+        max='390'
+        step='1'
+        value={intervalStep}
+        onChange={changeIntervalStep}
+      />
     </div>
   );
 }
@@ -121,10 +118,10 @@ const BuyStock = ({ sharePrice }) => {
   const [amount, setAmount] = useState(sharePrice);
   const [balance, setBalance] = useState(1000);
   const [shareCount, setShareCount] = useState(0);
+  // const amount = numShares * sharePrice;
 
   // update stuff when other stuff changes
   useEffect(() => setAmount(numShares * sharePrice), [sharePrice, numShares]);
-  useEffect(() => setNumShares(amount / sharePrice), [amount]);
   
   // buy the stock and keep track of the balance and shares owned
   const handleBuyClick = () => {
@@ -144,6 +141,19 @@ const BuyStock = ({ sharePrice }) => {
     setShareCount(shareCount - numShares);
   }
 
+  console.log(sharePrice);
+
+  const handleNumSharesChange = (e) => {
+    if (e.target.value < 0) return;
+    setNumShares(e.target.valueAsNumber);
+    setAmount(e.target.valueAsNumber * sharePrice);
+  }
+  const handleAmountChange = (e) => {
+    if (e.target.value < 0) return;
+    setAmount(e.target.valueAsNumber);
+    setNumShares(e.target.valueAsNumber / sharePrice);
+  }
+
   return (
     <div>
       <h3>Balance: {balance}</h3>
@@ -153,16 +163,20 @@ const BuyStock = ({ sharePrice }) => {
         <input 
           type='number' 
           id='sharesInput' 
+          min='0'
           value={numShares} 
-          onChange={(e) => setNumShares(parseFloat(e.target.value) || 0)} />
+          onChange={handleNumSharesChange}
+        />
       </div>
       <div>
         <label htmlFor='amountInput'>Enter dollar amount to buy/sell: </label>
         <input 
           type='number' 
-          id='amountInput' 
+          id='amountInput'
+          min='0' 
           value={amount}
-          onChange={(e) => setAmount(parseFloat(e.target.value) || 0)} />
+          onChange={handleAmountChange}
+        />
       </div>
       <button onClick={handleBuyClick}>Buy</button>
       <button onClick={handleSellClick}>Sell</button>
@@ -177,10 +191,7 @@ const Simulator = () => {
   // get data from backend make sure only runs once and update share price
   const [sharePrice, setSharePrice] = useState(10);
   const [datasets, setDatasets] = useState({'1day': [], '1min': []});
-  const apiCalled = useRef(false);
   useEffect(() => {
-    if (apiCalled.current) return;
-    apiCalled.current = true;
     axios.get(`${process.env.REACT_APP_API_URL}/get_data?ticker=${ticker}&startMonth=${startMonth}&endMonth=${endMonth}`)
     .then(response => {
       setDatasets(response.data);
