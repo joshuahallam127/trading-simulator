@@ -6,6 +6,7 @@ import moment from 'moment';
 import { Line } from 'react-chartjs-2';
 import HeadingBanner from './HeadingBanner';
 import './SimulatorPage.css';
+import MoonLoader from 'react-spinners/MoonLoader';
 
 const StockChart = ({data, onIntervalChange, title, idx, setIdx }) => {
   // data to show on the chart
@@ -52,7 +53,7 @@ const StockChart = ({data, onIntervalChange, title, idx, setIdx }) => {
   // return the chart with two buttons below
   return (
     <div className='stock-chart'>
-      <h4>{title}</h4>
+      <h3>{title}</h3>
       <Line data={chartData} />
       <button onClick={goForwardInterval}>next</button>
       <label htmlFor='interval-increment-number'>Interval increment: </label>
@@ -92,37 +93,49 @@ const StockCharts = ({datasets, setSharePrice}) => {
   }, [setSharePrice, datasets, day, min])
 
   return (
-    <div className='stock-charts'>
-      <StockChart 
-        data={datasets['1day']} 
-        onIntervalChange={() => setMin(0)} 
-        title={'Daily'}
-        idx={day}
-        setIdx={setDay}
-      />
-      <StockChart
-        data={datasets['1min'].slice(day * MINS_IN_DAY, (day+1) * MINS_IN_DAY)} 
-        onIntervalChange={() => null} 
-        title={'Intraday'}
-        idx={min}
-        setIdx={setMin}
-      />
-    </div>
+    <>
+      <div className='title'>
+          <h1>CHARTS</h1>
+      </div>
+      <div className='stock-charts'>
+        <StockChart 
+          data={datasets['1day']} 
+          onIntervalChange={() => setMin(0)} 
+          title={'Daily'}
+          idx={day}
+          setIdx={setDay}
+        />
+        <StockChart
+          data={datasets['1min'].slice(day * MINS_IN_DAY, (day+1) * MINS_IN_DAY)} 
+          onIntervalChange={() => null} 
+          title={'Intraday'}
+          idx={min}
+          setIdx={setMin}
+        />
+      </div>
+    </>
   )
 }
 
+const twoDP = (num) => {
+  if (num % 1 !== 0) {
+    return num.toFixed(2);
+  }
+  return num;
+}
 
-const BuyStock = ({ sharePrice }) => {
-  // to be able to enter number of shares to buy or dollar amount to buy
-  const [numShares, setNumShares] = useState(1);
+const StatsBuySell = ({ ticker, sharePrice }) => {
+  const startingBalance = 10000;
+  const [balance, setBalance] = useState(startingBalance);
+  const [sharesOwned, setSharesOwned] = useState(0);
   const [amount, setAmount] = useState(sharePrice);
-  const [balance, setBalance] = useState(1000);
-  const [shareCount, setShareCount] = useState(0);
-  // const amount = numShares * sharePrice;
+  const [sharesToTrade, setSharesToTrade] = useState(1);
+
+  // to be able to enter number of shares to buy or dollar amount to buy
 
   // update stuff when other stuff changes
-  useEffect(() => setAmount(numShares * sharePrice), [sharePrice, numShares]);
-  
+  useEffect(() => setAmount(sharesToTrade * sharePrice), [sharePrice, sharesToTrade]);
+
   // buy the stock and keep track of the balance and shares owned
   const handleBuyClick = () => {
     if (balance < amount) {
@@ -130,59 +143,76 @@ const BuyStock = ({ sharePrice }) => {
       return;
     }
     setBalance(balance - amount);
-    setShareCount(shareCount + numShares);
+    setSharesOwned(sharesOwned + sharesToTrade);
   }
   const handleSellClick = () => {
-    if (numShares > shareCount) {
+    if (sharesToTrade > sharesOwned) {
       alert('Not enough shares to sell desired amount');
       return;
     }
     setBalance(balance + amount);
-    setShareCount(shareCount - numShares);
+    setSharesOwned(sharesOwned - sharesToTrade);
   }
-
-  console.log(sharePrice);
 
   const handleNumSharesChange = (e) => {
     if (e.target.value < 0) return;
-    setNumShares(e.target.valueAsNumber);
+    setSharesToTrade(e.target.valueAsNumber);
     setAmount(e.target.valueAsNumber * sharePrice);
   }
   const handleAmountChange = (e) => {
     if (e.target.value < 0) return;
     setAmount(e.target.valueAsNumber);
-    setNumShares(e.target.valueAsNumber / sharePrice);
+    setSharesToTrade(e.target.valueAsNumber / sharePrice);
   }
 
   return (
-    <div>
-      <h3>Balance: {balance}</h3>
-      <h3>Share Count: {shareCount}</h3>
-      <div>
-        <label htmlFor='sharesInput'>Enter number of shares to buy/sell: </label>
-        <input 
-          type='number' 
-          id='sharesInput' 
-          min='0'
-          value={numShares} 
-          onChange={handleNumSharesChange}
-        />
+    <div className='stats-and-buy-sell'>
+      <div className='container'>
+        <div className='title'>
+          <h1>STATS</h1>
+        </div>
+        <h2>Trading: {ticker}</h2>
+        <h2>Current Price: ${sharePrice}</h2>
+        <h2>Balance: ${balance}</h2>
+        <h2>Shares Owned: {sharesOwned}</h2>
       </div>
-      <div>
-        <label htmlFor='amountInput'>Enter dollar amount to buy/sell: </label>
-        <input 
-          type='number' 
-          id='amountInput'
-          min='0' 
-          value={amount}
-          onChange={handleAmountChange}
-        />
+      <div className='container'>
+        <div className='title'>
+          <h1>BUY/SELL</h1>
+        </div>
+        <div className='input-container'>
+          <label htmlFor='sharesInput'>
+            <h2>Enter number of shares to buy/sell: </h2>
+          </label>
+          <input 
+            type='number' 
+            id='sharesInput' 
+            min='0'
+            value={sharesToTrade} 
+            onChange={handleNumSharesChange}
+          />
+        </div>
+        <div className='input-container'>
+          <label htmlFor='amountInput'>
+            <h2>Enter dollar amount to buy/sell: </h2>
+          </label>
+          <input 
+            type='number' 
+            id='amountInput'
+            min='0' 
+            value={amount}
+            onChange={handleAmountChange}
+          />
+        </div>
+        <div className='buy-sell-buttons'>
+          <button style={{backgroundColor: 'green'}} onClick={handleBuyClick}>Buy</button>
+          <button style={{backgroundColor: 'red'}} onClick={handleSellClick}>Sell</button>
+        </div>
       </div>
-      <button onClick={handleBuyClick}>Buy</button>
-      <button onClick={handleSellClick}>Sell</button>
     </div>
   )
 }
+
 
 const Simulator = () => {
   // get ticker from url parameter
@@ -197,18 +227,24 @@ const Simulator = () => {
       setDatasets(response.data);
       setSharePrice(response.data['1day'][0][1]);
     })
-    .catch(error => console.error('Error loading data: ', error));
+    .catch(error => alert('Error getting data from backend, please try again later'));
   }, []);
 
   return (
     <>
-      <HeadingBanner title={'TRADING SIMULATOR'} backButtonPath={'/trading-simulator/Setup'} />
-      <div className='simulator-body'>
-        <h3>Trading: {ticker}</h3>
-        <h3>Current share price: {sharePrice}</h3>
-        <BuyStock sharePrice={sharePrice}/>
-        <StockCharts datasets={datasets} setSharePrice={setSharePrice}/>
+      {datasets['1day'].length === 0 ?
+      <div className='loading-background'>
+        <MoonLoader size='300px'/>
       </div>
+      :
+      <>
+        <HeadingBanner title={'TRADING SIMULATOR'} backButtonPath={'/trading-simulator/Setup'} />
+        <div className='simulator-body'>
+          <StatsBuySell ticker={ticker} sharePrice={sharePrice} />
+          <StockCharts datasets={datasets} setSharePrice={setSharePrice}/>
+        </div>
+      </>
+      }
     </>
   )
 }

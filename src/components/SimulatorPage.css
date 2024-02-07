@@ -1,53 +1,70 @@
 .simulator-body {
-  box-shadow:rgba(0, 0, 0, 0.6) 0px 0px 10px 0px;
-  margin: 0 15vw;
-  padding: 0 2vw;
-  padding-top: 12vh;
-  background: white;
+  margin: 0 10vw;
+  padding-bottom: 5vh;
+  background: rgb(240, 240, 240);
 }
 
-h3 {
-    margin: 0;
+.loading-background {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgb(240, 240, 240);
+
 }
   
 .stock-charts {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .stock-chart {
-    display: flex;
-    flex-direction: column;
-    justify-content: top;
-    width: 40vw;
-    margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: top;
+  width: 40vw;
+  margin: 0 20px;
 }
 
-.close-trading-button {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin: 0 auto;
-    width: 100%;
-    padding-bottom: 20px;
+.stats-and-buy-sell {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.close-trading-button button {
-    border: 1px solid black;
-    cursor: pointer;
-    background-color: blueviolet; /* Add a blue color for the buttons */
-    color: white;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-    border-radius: 15px;
-    margin: 0 auto;
-    width: 100px;
-    height: 50px;
+.container {
+  flex: 1;
+  padding: 40px;
+  padding-top: 0;
 }
 
-.close-trading-button button:hover {
-    background-color: blue;
-    color: white;
-    border-color: black;
-    border: 2px solid black;
+.title {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buy-sell-buttons button {
+  width: 100%;
+  padding: 20px;
+  margin: 10px 0;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-container input {
+  padding: 10px;
+  font-size: 15px;
 }

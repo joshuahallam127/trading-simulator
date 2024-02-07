@@ -33,7 +33,6 @@ const Setup = () => {
 
   // chosen ticker
   const [ticker, setTicker] = useState('');
-  console.log(ticker);
   
   // all tickers with loaded datasets
   const [tickerOptions, setTickerOptions] = useState([]); 
