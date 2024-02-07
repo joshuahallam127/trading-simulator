@@ -32,6 +32,7 @@ const Setup = () => {
 
   // chosen ticker
   const [ticker, setTicker] = useState('');
+  console.log(ticker);
   
   // all tickers with loaded datasets
   const [tickerOptions, setTickerOptions] = useState([]); 
@@ -71,6 +72,7 @@ const Setup = () => {
             onChange={(selectedOption) => setTicker(selectedOption.value)}
             placeholder="Enter ticker symbol..."
             filterOption={createFilter({ ignoreAccents: false })}
+            value={{ label: ticker, value: ticker}}
           />
         </div>
       )
@@ -216,7 +218,7 @@ const Setup = () => {
         }
         const startMonthIdx = checkboxes.findIndex(checkbox => checkbox[1]);
         const endMonthIdx = checkboxes.map(checkbox => checkbox[1]).lastIndexOf(true);
-        const startMonth = formatDate(monthsHeadersAll[startMonthIdx], true);
+        const startMonth = formatDate(monthsHeadersAll[startMonthIdx === 0 ? 0 : startMonthIdx - 1], true);
         const endMonth = formatDate(monthsHeadersAll[endMonthIdx], false);
         setDownloadingData(true);
         
