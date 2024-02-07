@@ -18,7 +18,6 @@
     "react-spinners": "^0.13.8",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "https://joshuahallam127.github.io/trading-simulator",
   "homepage": "https://joshuahallam127.github.io/trading-simulator",
   "scripts": {
     "start": "react-scripts start",

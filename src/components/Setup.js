@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncSelect from 'react-select/async';
 import { createFilter } from 'react-select';
 import MoonLoader from 'react-spinners/MoonLoader';
+import BeatLoader from 'react-spinners/BeatLoader';
 import { Navigate } from 'react-router-dom';
 
 const HeadingBanner = () => (
@@ -141,10 +142,7 @@ const Setup = () => {
     })
     .catch(error => console.error('Error getting months data: ', error));
   }
-
-  useEffect(() => {
-    getMonthsHeadersHave();
-  }, [ticker]);
+  useEffect(() => getMonthsHeadersHave(), [ticker]);
 
   // array defining if there is a checkbox for that month, and if so whether it is checked
   // each element of the form (is there a checkbox, is it checked)
@@ -170,10 +168,23 @@ const Setup = () => {
       cost++;
     }
     setCost(cost);
-  })
+  }, [checkboxes]);
 
   // if data is currently downlading
   const [downloadingData, setDownloadingData] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  useEffect(() => {
+    if (downloadingData) {
+      if (timeRemaining === 0) {
+        return;
+      }
+      const interval = setInterval(() => {
+        setTimeRemaining((prev) => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [downloadingData, timeRemaining])
 
   // function to change from month to date
   const formatDate = (date, isStart) => {
@@ -185,63 +196,72 @@ const Setup = () => {
 
   // download data component 
   const DownloadData = forwardRef((_, ref) => {
-    const DataTable = () => {
-  
-      // handle the checkbox being clicked
-      const handleCheckboxClick = (index) => {
-        // update the checkboxes appropriately
-        const newCheckboxes = [...checkboxes];
-        if (!newCheckboxes[index][1]) {
-          // tick all previous boxes
-          for (let i = index; i >= 0; i--) {
-            if (!newCheckboxes[i][0] || newCheckboxes[i][1]) break;
-            newCheckboxes[i][1] = true;
-          }
-        } else {
-          // untick all boxes afterwards
-          for (let i = index; i < newCheckboxes.length; i++) {
-            if (!newCheckboxes[i][1]) break;
-            newCheckboxes[i][1] = false;
-          }
-        }
-        setCheckboxes(newCheckboxes);
-      }
 
-      const handleDownloadClick = () => {
-        if (cost > callsRemaining) {
-          alert(`You do not have enough calls remaining to download this data. You have ${callsRemaining} calls remaining.`);
-          return;
+    // handle the checkbox being clicked
+    const handleCheckboxClick = (index) => {
+      // update the checkboxes appropriately
+      const newCheckboxes = [...checkboxes];
+      if (!newCheckboxes[index][1]) {
+        // tick all previous boxes
+        for (let i = index; i >= 0; i--) {
+          if (!newCheckboxes[i][0] || newCheckboxes[i][1]) break;
+          newCheckboxes[i][1] = true;
         }
-        if (!checkboxes.some(checkbox => checkbox[1])) {
-          alert('Please select at least one month to download!');
-          return;
+      } else {
+        // untick all boxes afterwards
+        for (let i = index; i < newCheckboxes.length; i++) {
+          if (!newCheckboxes[i][1]) break;
+          newCheckboxes[i][1] = false;
         }
-        const startMonthIdx = checkboxes.findIndex(checkbox => checkbox[1]);
-        const endMonthIdx = checkboxes.map(checkbox => checkbox[1]).lastIndexOf(true);
-        const startMonth = formatDate(monthsHeadersAll[startMonthIdx === 0 ? 0 : startMonthIdx - 1], true);
-        const endMonth = formatDate(monthsHeadersAll[endMonthIdx], false);
-        setDownloadingData(true);
-        
-        axios.get(`${process.env.REACT_APP_API_URL}/download_data?ticker=${ticker}&startMonth=${startMonth}&endMonth=${endMonth}`)
-        .then(response => {
-          setCallsRemaining(callsRemaining - cost);
-          setDownloadingData(false);
-          getMonthsHeadersHave();
-        })
-        .catch(error => console.error('Error downloading data: ', error));
       }
+      setCheckboxes(newCheckboxes);
+    }
 
-      if (downloadingData) {
-        return (
-          <div>
-            <h3>Data is currently downloading...</h3>
-            <h5>(This normally takes about 1 minute)</h5>
-          </div>
-        )
+    const handleDownloadClick = () => {
+      if (cost > callsRemaining) {
+        alert(`You do not have enough calls remaining to download this data. You have ${callsRemaining} calls remaining.`);
+        return;
       }
-    
-      return (
+      if (!checkboxes.some(checkbox => checkbox[1])) {
+        alert('Please select at least one month to download!');
+        return;
+      }
+      const startMonthIdx = checkboxes.findIndex(checkbox => checkbox[1]);
+      const endMonthIdx = checkboxes.map(checkbox => checkbox[1]).lastIndexOf(true);
+      const startMonth = formatDate(monthsHeadersAll[startMonthIdx === 0 ? 0 : startMonthIdx - 1], true);
+      const endMonth = formatDate(monthsHeadersAll[endMonthIdx], false);
+      setDownloadingData(true);
+      setTimeRemaining((endMonthIdx - startMonthIdx + 1) * 10);
+      
+      axios.get(`${process.env.REACT_APP_API_URL}/download_data?ticker=${ticker}&startMonth=${startMonth}&endMonth=${endMonth}`)
+      .then(response => {
+        setCallsRemaining(callsRemaining - cost);
+        setDownloadingData(false);
+        getMonthsHeadersHave();
+      })
+      .catch(error => console.error('Error downloading data: ', error));
+    }
+
+    return (
+      <div ref={ref} className='step'>
+        <h1>Step 2. Download New Data <span style={{ color: '#8892b0' }}>(optional)</span></h1>
+        {downloadingData ?
         <div>
+          <div style={{display: 'flex', flexDirection: 'row'}}>
+            <h3>Data is currently downloading</h3>
+            <div style={{display: 'flex', alignItems: 'flex-end', paddingBottom: '6px'}}>
+              <BeatLoader size='10px' color='#8892b0'/>
+            </div>
+          </div>
+          {timeRemaining > 0 ?
+          <h5>Estimated time remaining: {timeRemaining}s</h5> 
+          :
+          <h5>Data will be downloaded shortly</h5>
+          }
+        </div>
+        :
+        <div>
+          <h2>Tick Months You Wish to Download</h2>
           <p style={{fontSize: '22px'}}>✔️ = Data Already Downloaded</p>
           {loadingMonths ?
             <div style={{margin:'50px', display: 'flex', justifyContent: 'center' }}>
@@ -272,14 +292,7 @@ const Setup = () => {
           <p>Current cost to download data: {cost}</p>
           <p>Calls remaining: {callsRemaining}</p>
         </div>
-      )
-    }
-
-    return (
-      <div ref={ref} className='step'>
-        <h1>Step 2. Download New Data <span style={{ color: '#8892b0' }}>(optional)</span></h1>
-        <h2>Tick Months You Wish to Download</h2>
-        <DataTable />
+        }
         {selectTimeframeRef && 
         <div className='next-page-button'>
           <button style={{margin: '20px'}} onClick={() => scrollToStep(selectTimeframeRef)}>Continue</button>
