@@ -72,12 +72,3 @@
   padding: 10px;
   font-size: 15px;
 }
-
-.tut {
-  position: relative;
-  display: inline-block;
-  height: 100px;
-  width: 100px;
-  text-align: center;
-  background: #172f58;
-}

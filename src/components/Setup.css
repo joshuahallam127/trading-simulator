@@ -178,8 +178,33 @@
 .from-to {
   display: flex;
   flex-direction: row;
+  margin-right: 100px;
 }
 .from-to h2 {
-  margin-right: 30px;
   margin-top: 0;
+  flex: 1;
 }
+
+.see-more-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.see-more-container span {
+  cursor: pointer;
+  text-decoration: underline; 
+  font-size: 20px;
+}
+
+/* .see-more-container button {
+  padding: 20px 30px;
+  border-radius: 15px;
+  border: 1px solid black;
+  cursor: pointer;
+  background: #172f58;
+  color: white;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+  font-size: 20px;
+  font-family: 'Arial', 'Lato', sans-serif;
+} */

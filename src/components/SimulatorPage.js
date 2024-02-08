@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
@@ -118,8 +118,17 @@ const StockCharts = ({datasets, setSharePrice}) => {
 }
 
 const twoDP = (num) => {
+  if (!num) return String(num);
   if (num % 1 !== 0) {
     return num.toFixed(2);
+  }
+  return num;
+}
+
+const fourDP = (num) => {
+  if (!num) return String(num);
+  if (num % 1 !== 0) {
+    return num.toFixed(4);
   }
   return num;
 }
@@ -138,6 +147,10 @@ const StatsBuySell = ({ ticker, sharePrice }) => {
 
   // buy the stock and keep track of the balance and shares owned
   const handleBuyClick = () => {
+    if (!amount || !sharesToTrade) {
+      alert('Please enter a valid amount or number of shares');
+      return;
+    }
     if (balance < amount) {
       alert('Not enough money to buy that many shares');
       return;
@@ -157,7 +170,6 @@ const StatsBuySell = ({ ticker, sharePrice }) => {
   const handleNumSharesChange = (e) => {
     if (e.target.value < 0) return;
     setSharesToTrade(e.target.valueAsNumber);
-    setAmount(e.target.valueAsNumber * sharePrice);
   }
   const handleAmountChange = (e) => {
     if (e.target.value < 0) return;
@@ -173,7 +185,7 @@ const StatsBuySell = ({ ticker, sharePrice }) => {
         </div>
         <h2>Trading: {ticker}</h2>
         <h2>Current Price: ${sharePrice}</h2>
-        <h2>Balance: ${balance}</h2>
+        <h2>Balance: ${twoDP(balance)}</h2>
         <h2>Shares Owned: {sharesOwned}</h2>
       </div>
       <div className='container'>
@@ -188,7 +200,7 @@ const StatsBuySell = ({ ticker, sharePrice }) => {
             type='number' 
             id='sharesInput' 
             min='0'
-            value={sharesToTrade} 
+            value={fourDP(sharesToTrade)} 
             onChange={handleNumSharesChange}
           />
         </div>
@@ -200,7 +212,7 @@ const StatsBuySell = ({ ticker, sharePrice }) => {
             type='number' 
             id='amountInput'
             min='0' 
-            value={amount}
+            value={twoDP(amount)}
             onChange={handleAmountChange}
           />
         </div>

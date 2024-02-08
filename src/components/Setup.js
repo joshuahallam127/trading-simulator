@@ -60,6 +60,8 @@ const Setup = () => {
       .then(tickers => setAllTickers(tickers))
       .catch(error => console.error('Error fetching file: ', error));
   }, []);
+
+  const [seeMore, setSeeMore] = useState(false);
   
   // select stock component
   const SelectStock = () => {
@@ -92,7 +94,7 @@ const Setup = () => {
               <MoonLoader size={150} color={'#8892b0'} loading={loadingTickers} />
             </div>
           )}
-          {tickerOptions.map((tickerOption, index) => (
+          {tickerOptions.slice(0, 10).map((tickerOption, index) => (
             <button 
               key={index}
               style={{backgroundColor: tickerOption === ticker ? '#3d4f81' : '#172f58'}} 
@@ -101,7 +103,26 @@ const Setup = () => {
               {tickerOption}
             </button>
           ))}
+          {seeMore && (
+            <>
+              {tickerOptions.slice(10).map((tickerOption, index) => (
+                <button 
+                  key={index}
+                  style={{backgroundColor: tickerOption === ticker ? '#3d4f81' : '#172f58'}} 
+                  onClick={(e) => setTicker(e.target.innerText)}
+                >
+                  {tickerOption}
+                </button>
+              ))}
+            </>
+          )
+          }
         </div>
+        {tickerOptions.length > 10 &&
+        <div className='see-more-container'>
+          <span onClick={() => setSeeMore(!seeMore)}>{seeMore ? 'See Less ▲' : 'See More ▼'}</span>
+        </div>
+        }
         <h2>Search New Ticker</h2>
         <div className='new-options'>
           <SearchTicker />
@@ -342,6 +363,26 @@ const Setup = () => {
     setChoosingStartMonth(true);
   }, [ticker]);
 
+  const shortToLongMonth = {
+    'Jan': 'January',
+    'Feb': 'February',
+    'Mar': 'March',
+    'Apr': 'April',
+    'May': 'May',
+    'Jun': 'June',
+    'Jul': 'July',
+    'Aug': 'August',
+    'Sep': 'September',
+    'Oct': 'October',
+    'Nov': 'November',
+    'Dec': 'December'
+  }
+
+  const shortToLongDate = (shortDate) => {
+    const [month, year] = shortDate.split(' ');
+    return `${shortToLongMonth[month]} ${year}`;
+  }
+
   const SelectTimeframe = forwardRef((_, ref) => {
     const handleMonthClick = (index) => {
       if (monthsConfirmed) return;
@@ -381,8 +422,8 @@ const Setup = () => {
           :
           <div>
             <div className='from-to'>
-              <h2>From: {startMonthIdx !== -1 ? monthsHeadersHave[startMonthIdx] : '___ ____'}</h2>
-              <h2>To: {endMonthIdx !== -1 ? monthsHeadersHave[endMonthIdx] : '___ ____'}</h2>
+              <h2>From: {startMonthIdx !== -1 ? shortToLongDate(monthsHeadersHave[startMonthIdx]) : '______ ____'}</h2>
+              <h2>To: {endMonthIdx !== -1 ? shortToLongDate(monthsHeadersHave[endMonthIdx]) : '______ ____'}</h2>
             </div>
             <div className='button-pair'>
               <button 
@@ -456,7 +497,7 @@ const Setup = () => {
     return (
       <div ref={ref} className='step'>
         <h1>Step 4. Trade!</h1>
-        {monthsConfirmed && (<h2>Click button to start the simulator trading {ticker} from {monthsHeadersHave[startMonthIdx]} until {monthsHeadersHave[endMonthIdx]}</h2>)}
+        {monthsConfirmed && (<h2>Click button to start the simulator trading {ticker} from {shortToLongDate(monthsHeadersHave[startMonthIdx])} until {shortToLongDate(monthsHeadersHave[endMonthIdx])}</h2>)}
         <div className='next-page-button'>
           {clicked && <Navigate to={`/trading-simulator/Simulator/${ticker}/${startMonth}/${endMonth}`} />}
           <button onClick={handleClick}>Let's Go! {'->'}</button>

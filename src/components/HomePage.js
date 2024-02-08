@@ -36,7 +36,7 @@ const HomePage = () => {
 
       return () => clearInterval(reduceTimeRemaining);
     }
-  }, []);
+  }, [apiReady]);
 
   return (
     <div className='home-page' style={{backgroundImage: `url('/trading-simulator/frontpage-background.jpg')`, height: '100vh'}}>
@@ -44,7 +44,7 @@ const HomePage = () => {
       <h1>The Trading Simulator</h1>
       <h2>Learn to Earn!</h2>
       {!apiReady && (
-        <div>
+        <div style={{textAlign: 'center'}}>
           <h3>API backend is starting up</h3>
           {timeRemaining >= 0 ? 
           <h4>Estimated time remaining: {timeRemaining}s</h4> 
