@@ -115,6 +115,12 @@
   width: 130px;
   height: 70px;
   margin: 15px;
+  flex: 1;
+}
+
+.download-buttons p {
+  font-size: 26px;
+  margin: 0;
 }
 
 .download-buttons button:hover {
@@ -126,8 +132,9 @@
 }
 
 .button-pair button {
-  padding: 5px 10px;
+  padding: 12px 20px;
   margin: 10px 0;
+  font-size: 16px;
 }
 
 .left-button {
@@ -166,4 +173,13 @@
 .center-content {
   display: flex;
   justify-content: center;
+}
+
+.from-to {
+  display: flex;
+  flex-direction: row;
+}
+.from-to h2 {
+  margin-right: 30px;
+  margin-top: 0;
 }

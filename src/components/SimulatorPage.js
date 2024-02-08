@@ -53,7 +53,7 @@ const StockChart = ({data, onIntervalChange, title, idx, setIdx }) => {
   // return the chart with two buttons below
   return (
     <div className='stock-chart'>
-      <h3>{title}</h3>
+      <h2>{title}</h2>
       <Line data={chartData} />
       <button onClick={goForwardInterval}>next</button>
       <label htmlFor='interval-increment-number'>Interval increment: </label>
@@ -108,7 +108,7 @@ const StockCharts = ({datasets, setSharePrice}) => {
         <StockChart
           data={datasets['1min'].slice(day * MINS_IN_DAY, (day+1) * MINS_IN_DAY)} 
           onIntervalChange={() => null} 
-          title={'Intraday'}
+          title={'Minute'}
           idx={min}
           setIdx={setMin}
         />

@@ -20,6 +20,10 @@
   justify-content: center;
 }
 
+.stock-charts h2 {
+  text-align: center;
+}
+
 .stock-chart {
   display: flex;
   flex-direction: column;
@@ -67,4 +71,13 @@
 .input-container input {
   padding: 10px;
   font-size: 15px;
+}
+
+.tut {
+  position: relative;
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+  text-align: center;
+  background: #172f58;
 }

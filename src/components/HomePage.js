@@ -14,7 +14,7 @@ const HomePage = () => {
       const checkApi = () => {
         axios.get(process.env.REACT_APP_API_URL)
         .then(response => setApiReady(true))
-        .catch(error => console.log('error'));
+        .catch(error => null);
       }
 
       // check api on start up
@@ -31,7 +31,6 @@ const HomePage = () => {
     if (!apiReady) {
       // reduce timer every second
       const reduceTimeRemaining = setInterval(() => {
-        console.log('here');
         setTimeRemaining((prev) => prev - 1);
       }, 1000);
 

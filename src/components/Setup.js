@@ -5,11 +5,15 @@ import AsyncSelect from 'react-select/async';
 import { createFilter } from 'react-select';
 import MoonLoader from 'react-spinners/MoonLoader';
 import BeatLoader from 'react-spinners/BeatLoader';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 
 const HeadingBanner = () => (
   <div className='heading-banner-new'>
-    <img className='icon-new' src='/trading-simulator/trading-logo.jpg'/>
+    <div className='back-button-container'>
+      <Link to={'/trading-simulator'}>
+        <button className='back-button'>{'<'}</button>
+      </Link>
+    </div>
     <div>
       <a href="https://github.com/joshuahallam127" target="_blank" rel="noopener noreferrer">
         <img className='icon-new' src="/trading-simulator/github-icon.png" alt="Github"/>
@@ -80,8 +84,8 @@ const Setup = () => {
 
     return (
       <div className='step'>
-        <h1>Step 1. Choose Stock</h1>
-        <h2>Choose From Loaded Datasets</h2>
+        <h1>Step 1. Choose Stock To Trade</h1>
+        <h2>Preloaded Datasets</h2>
         <div className='ticker-buttons'>
           {loadingTickers && (
             <div style={{margin:'50px'}}>
@@ -98,8 +102,7 @@ const Setup = () => {
             </button>
           ))}
         </div>
-        <h3>OR</h3>
-        <h2>Search For a New Stock</h2>
+        <h2>Search New Ticker</h2>
         <div className='new-options'>
           <SearchTicker />
         </div>
@@ -265,8 +268,8 @@ const Setup = () => {
         </div>
         :
         <div>
-          <h2>Tick Months You Wish to Download</h2>
           <p style={{fontSize: '22px'}}>✔️ = Data Already Downloaded</p>
+          <p style={{fontSize: '22px'}}><input type='checkbox' disabled /> = Tick Box Then Press 'Start Download' To Have More Data Available To Trade</p>
           {loadingMonths ?
             <div style={{margin:'50px', display: 'flex', justifyContent: 'center' }}>
               <MoonLoader size={150} color={'#8892b0'} loading={loadingMonths} />
@@ -288,13 +291,19 @@ const Setup = () => {
                 ))}
               </div>
               <div className='download-buttons'>
-                <button onClick={() => setCheckboxes(checkboxes.map(checkbox => checkbox[0] ? [true, true] : [false, false]))}>Tick all</button>
-                <button onClick={handleDownloadClick}>Download Data</button>
+                <div style={{flex: '1'}}>
+                  <p>Calls required: <span style={{color: callsRemaining - cost >= 0 ? 'green' : 'red'}}>{cost}</span></p>
+                  <p>Calls remaining: {callsRemaining}</p>
+                </div>
+                <div>
+                  <button onClick={handleDownloadClick}>Start Download</button>
+                </div>
+                <div style={{flex: '1'}}>
+
+                </div>
               </div>
             </div>
           }
-          <p>Current cost to download data: {cost}</p>
-          <p>Calls remaining: {callsRemaining}</p>
         </div>
         }
         {selectTimeframeRef && 
@@ -364,16 +373,17 @@ const Setup = () => {
   
     return (
       <div ref={ref} className='step'>
-        <h1>Step 3. Choose Timeframe</h1>
-        <h2>Select Months to Trade</h2>
+        <h1>Step 3. Choose Trading Timeframe</h1>
         {loadingMonths ? 
           <div style={{margin:'50px', display: 'flex', justifyContent: 'center'}}>
             <MoonLoader size={100} color={'#8892b0'} loading={loadingMonths} />
           </div>
           :
           <div>
-            <h3>From: {startMonthIdx !== -1 ? monthsHeadersHave[startMonthIdx] : '___ ____'}</h3>
-            <h3>To: {endMonthIdx !== -1 ? monthsHeadersHave[endMonthIdx] : '___ ____'}</h3>
+            <div className='from-to'>
+              <h2>From: {startMonthIdx !== -1 ? monthsHeadersHave[startMonthIdx] : '___ ____'}</h2>
+              <h2>To: {endMonthIdx !== -1 ? monthsHeadersHave[endMonthIdx] : '___ ____'}</h2>
+            </div>
             <div className='button-pair'>
               <button 
                 className='left-button'
@@ -405,7 +415,6 @@ const Setup = () => {
                   key={index} 
                   className='my-box-button'
                   style={{backgroundColor: monthColours[index]}}
-                  // style={{backgroundColor: index >= startMonthIdx && index <= endMonthIdx ? '#3d4f81' : '#172f58'}}
                   onClick={() => handleMonthClick(index)}
                 >
                   <h5>{column.split(' ')[0]}</h5>
@@ -414,7 +423,7 @@ const Setup = () => {
               ))}
             </div>
             <div className='next-page-button'>
-              <button style={{margin: '20px'}} onClick={handleConfirmClick}>Confirm</button>
+              <button style={{margin: '20px'}} onClick={handleConfirmClick}>Confirm Months</button>
             </div>
             {simulatorRef && 
             <div className='next-page-button'>
