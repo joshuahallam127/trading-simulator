@@ -234,6 +234,11 @@ const Setup = () => {
       
       axios.get(`${process.env.REACT_APP_API_URL}/download_data?ticker=${ticker}&startMonth=${startMonth}&endMonth=${endMonth}`)
       .then(response => {
+        if (response.data === 'FAILED') {
+          alert('Data download failed, ran out of api calls. Please try again later.');
+          setDownloadingData(false);
+          setCallsRemaining(0);
+        }
         setCallsRemaining(callsRemaining - cost);
         setDownloadingData(false);
         getMonthsHeadersHave();
