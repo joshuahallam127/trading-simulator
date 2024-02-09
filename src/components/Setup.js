@@ -267,7 +267,10 @@ const Setup = () => {
         setDownloadingData(false);
         getMonthsHeadersHave();
       })
-      .catch(error => console.error('Error downloading data: ', error));
+      .catch(error => {
+        alert('Unknown error downloading data');
+        setDownloadingData(false);
+      });
     }
 
     return (
@@ -289,8 +292,8 @@ const Setup = () => {
         </div>
         :
         <div>
-          <p style={{fontSize: '22px'}}>✔️ = Data Already Downloaded</p>
-          <p style={{fontSize: '22px'}}><input type='checkbox' disabled /> = Tick Box Then Press 'Start Download' To Have More Data Available To Trade</p>
+          <p style={{fontSize: '22px'}}>✔️ = Data Already Downloaded For stock {ticker}</p>
+          <p style={{fontSize: '22px'}}><input type='checkbox' disabled /> = Tick Box Then Press 'Start Download' To Download More Data To Trade</p>
           {loadingMonths ?
             <div style={{margin:'50px', display: 'flex', justifyContent: 'center' }}>
               <MoonLoader size={150} color={'#8892b0'} loading={loadingMonths} />
