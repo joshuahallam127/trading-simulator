@@ -8,7 +8,6 @@
   display: flex;
   flex-direction: column;
   padding: 0 19vw;
-  /* font-size: 30px; */
   font-size: 1.8rem;
 }
 
@@ -28,7 +27,6 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* padding: 20px 30px; */
   padding: 1vw;
 }
 
@@ -38,7 +36,6 @@
 
 .step {
   color: #ccd6f6;
-  /* margin-bottom: 200px; */
   margin-bottom: 20vh;
 }
 
@@ -67,24 +64,17 @@
   border: 1px solid black;
   cursor: pointer;
   color: white;
-  /* width: 130px; */
-  /* height: 70px; */
-  /* margin: 30px; */
-  width: 10em;
-  height: 5.5em;
-  margin: 3em;
+  width: 8.5rem;
+  height: 4.5rem;
+  margin: 2.5rem;
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 .async-select-container {
   width: 15vw;
   margin: 0 auto;
-  /* justify-content: top; */
   text-align: left;
-  /* font-size: 20px; */
-  font-size: 0.8em;
-  /* z-index: 1; */
-  /* position: relative; */
+  font-size: 1.5rem;
 }
 
 .my-table {
@@ -95,13 +85,10 @@
 
 .my-box {
   text-align: center;
-  /* margin: 10px 0;
-  margin: 0.5em 0; */
 }
 
 .my-box h5 {
-  margin: 0 10px;
-  margin: 0 0.5em;
+  margin: 0 0.5rem;
 }
 
 .my-box-button {
@@ -109,10 +96,8 @@
 }
 
 .my-box-button h5 {
-  /* margin: 10px 10px; */
-  margin: 0.5em 0.5em;
-  /* font-size: 20px; */
-  font-size: 1.5em;
+  margin: 0.5rem 0.5rem;
+  font-size: 1.5rem;
 }
 
 .download-buttons {
@@ -123,18 +108,14 @@
 
 .download-buttons button {
   background: #112240;
-  /* width: 130px;
-  height: 70px;
-  margin: 15px; */
-  width: 10em;
-  height: 5.5em;
-  margin: 1em;
+  width: 9rem;
+  height: 4.5rem;
+  margin: 0.8rem;
+  font-size: 0.9rem;
   flex: 1;
 }
 
 .download-buttons p {
-  /* font-size: 26px;
-  font-size: 1em; */
   margin: 0;
 }
 
@@ -147,51 +128,42 @@
 }
 
 .button-pair button {
-  /* padding: 12px 20px; */
-  padding: 0.8em 1.3em;
-  /* margin: 10px 0; */
-  margin: 0.5em 0;
-  /* font-size: 16px; */
-  font-size: 0.55em;
+  padding: 0.8rem 1.3rem;
+  margin: 0.5rem 0;
+  font-size: 1rem;
 }
 
 .left-button {
-  /* border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px; */
-  border-top-left-radius: 0.8em;
-  border-bottom-left-radius: 0.8em;
+  border-top-left-radius: 0.8rem;
+  border-bottom-left-radius: 0.8rem;
 }
 
 .right-button {
-  /* border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px; */
-  border-top-right-radius: 0.8em;
-  border-bottom-right-radius: 0.8em;
+  border-top-right-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
 }
 
-.next-page-button {
+.continue-button {
   display: flex;
   justify-content: center;
 }
 
-.next-page-button button {
-  /* padding: 20px 30px; */
-  padding: 1em 1.5em;
-  /* border-radius: 15px; */
-  border-radius: 0.7em;
-  border: 1px solid black;
+.continue-button button {
+  padding: 1.2rem 1.7rem;
+  border-radius: 0.7rem;
+  border: 0.1rem solid black;
   cursor: pointer;
   background: #172f58;
   color: white;
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-  /* font-size: 20px; */
-  font-size: 0.7em;
+  font-size: 1.3rem;
   font-family: 'Arial', 'Lato', sans-serif;
 }
 
-.next-page-button button:hover {
+.continue-button button:hover {
   background: #112240;
-  border: 2px solid black;
+  border: 0.15rem solid black;
+  padding: 1.15rem 1.65rem;
 }
 
 .center-content {
@@ -202,7 +174,6 @@
 .from-to {
   display: flex;
   flex-direction: row;
-  /* margin-right: 100px; */
   margin-right: 5vw;
 }
 .from-to h2 {
@@ -218,6 +189,5 @@
 .see-more-container span {
   cursor: pointer;
   text-decoration: underline; 
-  /* font-size: 20px; */
-  font-size: 0.7em;
+  font-size: 1.5rem;
 }

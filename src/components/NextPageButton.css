@@ -4,22 +4,19 @@
 }
 
 .next-page-button button {
-  padding: 20px 30px;
-  margin: 15px;
-  border-radius: 15px;
-  border: 1px solid black;
+  padding: 1.2rem 1.7rem;
+  border-radius: 0.7rem;
+  border: 0.1rem solid black;
   cursor: pointer;
-  background-color: blueviolet;
-  color: white; 
+  background: #172f58;
+  color: white;
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-  font-size: 20px;
+  font-size: 1.3rem;
   font-family: 'Arial', 'Lato', sans-serif;
 }
 
 .next-page-button button:hover {
-  background-color: blue;
-  color: white;
-  border-color: black;
-  border: 2px solid black;
-  padding: 19px 30px;
+  background: #112240;
+  border: 0.15rem solid black;
+  padding: 1.15rem 1.65rem;
 }

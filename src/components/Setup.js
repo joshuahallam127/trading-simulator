@@ -128,7 +128,7 @@ const Setup = () => {
           <SearchTicker />
         </div>
         {downloadDataRef && 
-        <div className='next-page-button'>
+        <div className='continue-button'>
           <button style={{margin: '20px'}} onClick={() => scrollToStep(downloadDataRef)}>Continue</button>
         </div>}
       </div>
@@ -331,7 +331,7 @@ const Setup = () => {
         </div>
         }
         {selectTimeframeRef && 
-        <div className='next-page-button'>
+        <div className='continue-button'>
           <button style={{margin: '20px'}} onClick={() => scrollToStep(selectTimeframeRef)}>Continue</button>
         </div>}
       </div>
@@ -466,11 +466,11 @@ const Setup = () => {
                 </button>
               ))}
             </div>
-            <div className='next-page-button'>
+            <div className='continue-button'>
               <button style={{margin: '20px'}} onClick={handleConfirmClick}>Confirm Months</button>
             </div>
             {simulatorRef && 
-            <div className='next-page-button'>
+            <div className='continue-button'>
               <button style={{margin: '20px'}} onClick={() => scrollToStep(simulatorRef)}>Continue</button>
             </div>}
           </div>
@@ -501,7 +501,7 @@ const Setup = () => {
       <div ref={ref} className='step'>
         <h1>Step 4. Trade!</h1>
         {monthsConfirmed && (<h2>Click button to start the simulator trading {ticker} from {shortToLongDate(monthsHeadersHave[startMonthIdx])} until {shortToLongDate(monthsHeadersHave[endMonthIdx])}</h2>)}
-        <div className='next-page-button'>
+        <div className='continue-button'>
           {clicked && <Navigate to={`/trading-simulator/Simulator/${ticker}/${startMonth}/${endMonth}`} />}
           <button onClick={handleClick}>Let's Go! {'->'}</button>
         </div>
