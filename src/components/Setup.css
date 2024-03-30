@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 1vw;
 }
 
 .body-container {
   display: flex;
   flex-direction: column;
-  padding: 0 19vw;
+  padding: 0 20vw;
   font-size: 1.8rem;
 }
 
@@ -25,9 +26,8 @@
 .background-new {
   background: #0a192f;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding: 1vw;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 .side-bar button:hover {
@@ -59,7 +59,6 @@
 }
 
 .ticker-buttons button {
-  /* background: #112240; */
   background: #172f58;
   border: 1px solid black;
   cursor: pointer;
@@ -174,11 +173,13 @@
 .from-to {
   display: flex;
   flex-direction: row;
-  margin-right: 5vw;
+  width: 100%;
+  /* margin-right: 5vw; */
 }
 .from-to h2 {
   margin-top: 0;
   flex: 1;
+  font-size: 2.3rem;
 }
 
 .see-more-container {

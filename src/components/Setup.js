@@ -35,6 +35,28 @@ const Setup = () => {
   const selectTimeframeRef = useRef(null);
   const simulatorRef = useRef(null);
 
+  // window width and update on change
+  const [width, setWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // do some maths for max buttons in a row when window changes
+  const [buttonsInRow, setButtonsInRow] = useState(5);
+  useEffect(() => {
+    const usableWidth = 0.6 * width;
+    const buttonSize = 13.5 * 16;
+    setButtonsInRow(Math.floor(usableWidth / buttonSize));
+  }, [width]);
+
   // chosen ticker
   const [ticker, setTicker] = useState('');
   
@@ -94,7 +116,7 @@ const Setup = () => {
               <MoonLoader size={150} color={'#8892b0'} loading={loadingTickers} />
             </div>
           )}
-          {tickerOptions.slice(0, 10).map((tickerOption, index) => (
+          {tickerOptions.slice(0, buttonsInRow * 2).map((tickerOption, index) => (
             <button 
               key={index}
               style={{backgroundColor: tickerOption === ticker ? '#3d4f81' : '#172f58'}} 
@@ -105,7 +127,7 @@ const Setup = () => {
           ))}
           {seeMore && (
             <>
-              {tickerOptions.slice(10).map((tickerOption, index) => (
+              {tickerOptions.slice(buttonsInRow * 2).map((tickerOption, index) => (
                 <button 
                   key={index}
                   style={{backgroundColor: tickerOption === ticker ? '#3d4f81' : '#172f58'}} 
@@ -118,7 +140,7 @@ const Setup = () => {
           )
           }
         </div>
-        {tickerOptions.length > 10 &&
+        {tickerOptions.length > buttonsInRow * 2 &&
         <div className='see-more-container'>
           <span onClick={() => setSeeMore(!seeMore)}>{seeMore ? 'See Less ▲' : 'See More ▼'}</span>
         </div>
