@@ -1,3 +1,8 @@
+.simulator-page {
+  width: 100vw;
+  min-height: 100vh;
+}
+
 .simulator-body {
   margin: 0 10vw;
   padding-bottom: 5vh;
@@ -48,7 +53,6 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .buy-sell-buttons button {

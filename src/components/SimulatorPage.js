@@ -243,21 +243,18 @@ const Simulator = () => {
   }, []);
 
   return (
-    <>
-      {datasets['1day'].length === 0 ?
-      <div className='loading-background'>
-        <MoonLoader size='300px'/>
+    datasets['1day'].length === 0 ?
+    <div className='loading-background'>
+      <MoonLoader size='300px'/>
+    </div>
+    :
+    <div className='simulator-page'>
+      <HeadingBanner title={'TRADING SIMULATOR'} backButtonPath={'/trading-simulator/Setup'} />
+      <div className='simulator-body'>
+        <StatsBuySell ticker={ticker} sharePrice={sharePrice} />
+        <StockCharts datasets={datasets} setSharePrice={setSharePrice}/>
       </div>
-      :
-      <>
-        <HeadingBanner title={'TRADING SIMULATOR'} backButtonPath={'/trading-simulator/Setup'} />
-        <div className='simulator-body'>
-          <StatsBuySell ticker={ticker} sharePrice={sharePrice} />
-          <StockCharts datasets={datasets} setSharePrice={setSharePrice}/>
-        </div>
-      </>
-      }
-    </>
+    </div>
   )
 }
 
