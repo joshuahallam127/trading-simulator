@@ -45,11 +45,13 @@ const HomePage = () => {
       <h2>Learn to Earn!</h2>
       {!apiReady && (
         <div style={{textAlign: 'center'}}>
-          <h3>API backend is starting up</h3>
           {timeRemaining >= 0 ? 
-          <h4>Estimated time remaining: {timeRemaining}s</h4> 
+          <>
+            <h5>API backend is starting up</h5>
+            <h6>Estimated time remaining: {timeRemaining}s</h6> 
+          </>
           :
-          <h4>The server will be ready shortly</h4>}
+          <h6 style={{maxWidth: '50vw'}}>Sorry! The server should be ready shortly! I am using a free tier for my backend hosting which sometimes doesn't boot up! Check out the demo video on my portfolio page!</h6>}
         </div>
       )}
       {apiReady && <NextPageButton buttonPath='/trading-simulator/Setup' buttonText='Get Started ->' />}

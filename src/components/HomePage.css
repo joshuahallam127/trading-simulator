@@ -6,26 +6,15 @@
     width: inherit;
     height: inherit;
     color: white;
+    font-size: 3.5rem;
 }
 
-.home-page h1, .home-page h2, .home-page h3 {
-    font-weight: 500;
+.home-page h1, .home-page h2, .home-page h3, .home-page h4, .home-page h5, .home-page h6 {
+    font-weight: 1;
     color: white;
     margin: 1rem 1rem;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     font-family: 'Times New Roman', Times, serif;
-}
-
-.home-page h1 {
-    font-size: 8rem;
-}
-
-.home-page h2 {
-    font-size: 3rem;
-}
-
-.home-page h3 {
-    font-size: 2rem;
 }
 
 .home-page button {
